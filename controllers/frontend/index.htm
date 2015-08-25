@@ -1,0 +1,109 @@
+<?php Block::put('breadcrumb') ?>
+    <ul>
+        <li><?= e(trans('indikator.plugins::lang.plugin.name')) ?></li>
+    </ul>
+<?php Block::endPut() ?>
+
+<?php
+
+use Cms\Classes\Theme;
+$theme = Theme::getEditTheme()->getDirName();
+
+use Backend\Models\UserPreferences;
+$preferences = UserPreferences::forUser()->get('backend::backend.preferences');
+
+function fp_folderstat($folder = 'themes')
+{
+    $attr['size'] = $attr['files'] = $attr['folders'] = 0;
+
+    if (!File::exists($folder)) {
+        File::makeDirectory($folder, 0775, true);
+    }
+
+    $elementents = scandir($folder);
+    foreach ($elementents as $element) {
+        if ($element != '.' && $element != '..' && $element != '.quarantine' && $element != '.tmb') {
+            if (filetype($folder.'/'.$element) == 'dir') {
+                $value = fp_folderstat($folder.'/'.$element);
+                $attr['size'] += $value['size'];
+                $attr['files'] += $value['files'];
+                $attr['folders'] += $value['folders'] + 1;
+            }
+
+            else {
+                $attr['size'] += File::size($folder.'/'.$element);
+                $attr['files']++;
+            }
+        }
+    }
+
+    return $attr;
+}
+
+function fp_filesize($size = 0)
+{
+    if ($size > 0) {
+        $name = ['B', 'KB', 'MB'];
+        $common = ['au', 'bn', 'bw', 'ch', 'cn', 'do', 'eg', 'gt', 'hk', 'hn', 'ie', 'il', 'in', 'jp', 'ke', 'kp', 'kr', 'lb', 'lk', 'mn', 'mo', 'mt', 'mx', 'my', 'ng', 'ni', 'np', 'nz', 'pa', 'ph', 'pk', 'sg', 'th', 'tw', 'tz', 'ug', 'uk', 'us', 'zw'];
+
+        for ($i = 0; $size >= 1024; $i++) {
+            $size /= 1024;
+            if ($i < 1) $size = round($size, 0);
+            else $size = round($size, 1);
+        }
+
+        global $preferences;
+
+        if (!in_array($preferences['locale'], $common)) {
+            $size = str_replace('.', ',', $size);
+        }
+
+        return $size.' '.$name[$i];
+    }
+
+    $size = '0 '.'B';
+
+    return $size;
+}
+
+$stat['js'] = fp_folderstat('themes/'.$theme.'/assets/js');
+$stat['css'] = fp_folderstat('themes/'.$theme.'/assets/css');
+
+?>
+<div class="scoreboard">
+    <div data-control="toolbar">
+        <div class="scoreboard-item title-value">
+            <h4><?= e(trans('indikator.plugins::lang.stat.total')) ?></h4>
+            <p><?= DB::table('frontend_plugins')->count() ?></p>
+        </div>
+        <div class="scoreboard-item control-chart" data-control="chart-bar">
+            <ul>
+                <li data-color="#e27f7f">JS <span><?= DB::table('frontend_plugins')->where('type', '1')->count() ?></span></li>
+                <li data-color="#8892bf">PHP <span><?= DB::table('frontend_plugins')->where('type', '2')->count() ?></span></li>
+                <li data-color="#e2e17f">CSS <span><?= DB::table('frontend_plugins')->where('type', '3')->count() ?></span></li>
+            </ul>
+        </div>
+        <div class="scoreboard-item title-value">
+            <h4>JS</h4>
+            <p><?= fp_filesize($stat['js']['size']) ?></p>
+        </div>
+        <div class="scoreboard-item control-chart" data-control="chart-bar">
+            <ul>
+                <li data-color="#8892bf">JS <?= e(trans('indikator.plugins::lang.stat.folders')) ?><span><?= $stat['js']['folders'] ?></span></li>
+                <li data-color="#e2e17f">JS <?= e(trans('indikator.plugins::lang.stat.files')) ?><span><?= $stat['js']['files'] ?></span></li>
+            </ul>
+        </div>
+        <div class="scoreboard-item title-value">
+            <h4>CSS</h4>
+            <p><?= fp_filesize($stat['css']['size']) ?></p>
+        </div>
+        <div class="scoreboard-item control-chart" data-control="chart-bar">
+            <ul>
+                <li data-color="#8892bf">CSS <?= e(trans('indikator.plugins::lang.stat.folders')) ?><span><?= $stat['css']['folders'] ?></span></li>
+                <li data-color="#e2e17f">CSS <?= e(trans('indikator.plugins::lang.stat.files')) ?><span><?= $stat['css']['files'] ?></span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<?= $this->listRender() ?>

@@ -1,0 +1,6 @@
+<?php
+
+if ($record->webpage == '') echo DB::table('frontend_plugins')->where('id', $record->id)->pluck('name');
+else echo '<a href="'.DB::table('frontend_plugins')->where('id', $record->id)->pluck('webpage').'" target="_blank">'.DB::table('frontend_plugins')->where('id', $record->id)->pluck('name').'</a>';
+
+?>

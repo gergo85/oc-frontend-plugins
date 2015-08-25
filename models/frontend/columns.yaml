@@ -1,0 +1,49 @@
+# ===================================
+#  Column Definitions
+# ===================================
+
+columns:
+
+    language:
+        label: indikator.plugins::lang.form.language
+        searchable: true
+        type: partial
+        path: ~/plugins/indikator/plugins/models/frontend/_language.htm
+
+    name:
+        label: indikator.plugins::lang.form.name
+        searchable: true
+        type: partial
+        path: ~/plugins/indikator/plugins/models/frontend/_name.htm
+
+    version:
+        label: indikator.plugins::lang.form.version
+        searchable: true
+
+    theme:
+        label: indikator.plugins::lang.form.theme
+        searchable: true
+        invisible: true
+
+    description:
+        label: indikator.plugins::lang.form.description
+        searchable: true
+
+    common:
+        label: indikator.plugins::lang.form.common
+        searchable: true
+        invisible: true
+
+    created_at:
+        label: indikator.plugins::lang.form.created
+        searchable: true
+        invisible: true
+        type: datetime
+        format: Y-m-d G:i
+
+    updated_at:
+        label: indikator.plugins::lang.form.updated
+        searchable: true
+        invisible: true
+        type: datetime
+        format: Y-m-d G:i

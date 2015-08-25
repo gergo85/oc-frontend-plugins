@@ -1,0 +1,46 @@
+# ===================================
+#  Field Definitions
+# ===================================
+
+fields:
+
+    name:
+        label: indikator.plugins::lang.form.name
+        required: true
+        span: auto
+
+    webpage:
+        label: indikator.plugins::lang.form.webpage
+        span: auto
+
+    description:
+        label: indikator.plugins::lang.form.description
+        type: textarea
+        size: small
+        span: auto
+
+    common:
+        label: indikator.plugins::lang.form.common
+        type: textarea
+        size: small
+        span: auto
+
+secondaryTabs:
+    fields:
+
+        language:
+            label: indikator.plugins::lang.form.language
+            required: true
+            type: dropdown
+            options:
+                1: JavaScript
+                2: PHP
+                3: CSS
+            default: 1
+
+        version:
+            label: indikator.plugins::lang.form.version
+
+        theme:
+            label: indikator.plugins::lang.form.theme
+            type: dropdown

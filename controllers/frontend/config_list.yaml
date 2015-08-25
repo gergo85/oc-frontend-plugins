@@ -1,0 +1,23 @@
+# ===================================
+#  List Behavior Config
+# ===================================
+
+title: indikator.plugins::lang.plugin.name
+list: @/plugins/indikator/plugins/models/frontend/columns.yaml
+modelClass: Indikator\Plugins\Models\Frontend
+recordUrl: indikator/plugins/frontend/update/:id
+noRecordsMessage: backend::lang.list.no_records
+
+recordsPerPage: 15
+showCheckboxes: true
+showSetup: true
+defaultSort:
+    column: name
+    direction: asc
+
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: backend::lang.list.search_prompt
+
+filter: config_filter.yaml
