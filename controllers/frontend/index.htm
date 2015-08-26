@@ -78,9 +78,9 @@ $stat['css'] = fp_folderstat('themes/'.$theme.'/assets/css');
         </div>
         <div class="scoreboard-item control-chart" data-control="chart-bar">
             <ul>
-                <li data-color="#e27f7f">JS <span><?= DB::table('frontend_plugins')->where('type', '1')->count() ?></span></li>
-                <li data-color="#8892bf">PHP <span><?= DB::table('frontend_plugins')->where('type', '2')->count() ?></span></li>
-                <li data-color="#e2e17f">CSS <span><?= DB::table('frontend_plugins')->where('type', '3')->count() ?></span></li>
+                <li data-color="#e27f7f">JS <span><?= DB::table('frontend_plugins')->where('language', '1')->count() ?></span></li>
+                <li data-color="#8892bf">PHP <span><?= DB::table('frontend_plugins')->where('language', '2')->count() ?></span></li>
+                <li data-color="#e2e17f">CSS <span><?= DB::table('frontend_plugins')->where('language', '3')->count() ?></span></li>
             </ul>
         </div>
         <div class="scoreboard-item title-value">
