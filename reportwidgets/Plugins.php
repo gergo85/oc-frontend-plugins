@@ -53,9 +53,9 @@ class Plugins extends ReportWidgetBase
 
     protected function loadData()
     {
+        $this->vars['total'] = DB::table('frontend_plugins')->count();
         $this->vars['js'] = DB::table('frontend_plugins')->where('type', '1')->count();
         $this->vars['php'] = DB::table('frontend_plugins')->where('type', '2')->count();
         $this->vars['css'] = DB::table('frontend_plugins')->where('type', '3')->count();
-        $this->vars['total'] = $this->vars['js'] + $this->vars['php'];
     }
 }
