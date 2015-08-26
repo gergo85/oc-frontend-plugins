@@ -7,14 +7,14 @@ scopes:
     js:
         label: JavaScript
         type: checkbox
-        conditions: type = 1
+        conditions: language = 1
 
     php:
         label: PHP
         type: checkbox
-        conditions: type = 2
+        conditions: language = 2
 
     css:
         label: CSS
         type: checkbox
-        conditions: type = 3
+        conditions: language = 3
