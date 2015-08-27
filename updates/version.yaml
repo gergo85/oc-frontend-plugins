@@ -3,3 +3,4 @@
     - create_plugins_table.php
 1.0.1: Minor improvements and bugfixes.
 1.0.2: Added prefix to database.
+1.0.3: Changed the bar chart to pie.
