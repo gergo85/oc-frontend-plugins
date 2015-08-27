@@ -2,3 +2,4 @@
     - First version of Front-end Plugins.
     - create_plugins_table.php
 1.0.1: Minor improvements and bugfixes.
+1.0.2: Added prefix to database.
