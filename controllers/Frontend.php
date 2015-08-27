@@ -31,8 +31,8 @@ class Frontend extends Controller
     {
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $objectId) {
-                if (DB::table('frontend_plugins')->where('id', $objectId)->count() == 1) {
-                    DB::table('frontend_plugins')->where('id', $objectId)->delete();
+                if (DB::table('indikator_frontend_plugins')->where('id', $objectId)->count() == 1) {
+                    DB::table('indikator_frontend_plugins')->where('id', $objectId)->delete();
                 }
             }
 

@@ -4,7 +4,7 @@ return [
     'plugin' => [
         'name' => 'Bővítmények',
         'description' => 'A publikus felületen használt komponensek listája.',
-        'author' => 'Szabó Gergő'
+        'author' => 'Szabó Gergő',
         'title' => 'bővítmény'
     ],
     'form' => [

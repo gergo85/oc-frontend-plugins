@@ -7,7 +7,7 @@ class CreatePluginsTable extends Migration
 {
     public function up()
     {
-        Schema::create('frontend_plugins', function($table)
+        Schema::create('indikator_frontend_plugins', function($table)
         {
             $table->engine = 'InnoDB';
             $table->increments('id');
@@ -24,6 +24,6 @@ class CreatePluginsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('frontend_plugins');
+        Schema::dropIfExists('indikator_frontend_plugins');
     }
 }

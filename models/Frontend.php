@@ -6,7 +6,7 @@ class frontend extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
-    protected $table = 'frontend_plugins';
+    protected $table = 'indikator_frontend_plugins';
 
     public $rules = [
         'name' => 'required|between:1,100'

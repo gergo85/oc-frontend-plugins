@@ -74,13 +74,13 @@ $stat['css'] = fp_folderstat('themes/'.$theme.'/assets/css');
     <div data-control="toolbar">
         <div class="scoreboard-item title-value">
             <h4><?= e(trans('indikator.plugins::lang.stat.total')) ?></h4>
-            <p><?= DB::table('frontend_plugins')->count() ?></p>
+            <p><?= DB::table('indikator_frontend_plugins')->count() ?></p>
         </div>
         <div class="scoreboard-item control-chart" data-control="chart-bar">
             <ul>
-                <li data-color="#e27f7f">JS <span><?= DB::table('frontend_plugins')->where('language', '1')->count() ?></span></li>
-                <li data-color="#8892bf">PHP <span><?= DB::table('frontend_plugins')->where('language', '2')->count() ?></span></li>
-                <li data-color="#e2e17f">CSS <span><?= DB::table('frontend_plugins')->where('language', '3')->count() ?></span></li>
+                <li data-color="#e27f7f">JS <span><?= DB::table('indikator_frontend_plugins')->where('language', '1')->count() ?></span></li>
+                <li data-color="#8892bf">PHP <span><?= DB::table('indikator_frontend_plugins')->where('language', '2')->count() ?></span></li>
+                <li data-color="#e2e17f">CSS <span><?= DB::table('indikator_frontend_plugins')->where('language', '3')->count() ?></span></li>
             </ul>
         </div>
         <div class="scoreboard-item title-value">
