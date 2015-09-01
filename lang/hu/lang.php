@@ -24,8 +24,11 @@ return [
     ],
     'stat' => [
         'total' => 'Összesen',
+        'size' => 'Méret',
         'folders' => 'mappák',
-        'files' => 'fájlok'
+        'pieces' => 'darab',
+        'files' => 'fájlok',
+        'img' => 'KÉP'
     ],
     'widget' => [
         'show_total' => 'Összes mutatása',
@@ -37,5 +40,7 @@ return [
     'flash' => [
         'delete' => 'Valóban törölni akarja a tételeket?',
         'remove' => 'A tételek sikeresen eltávolításra kerültek.'
-    ]
+    ],
+    'hint' => 'Kérjük <b>értékelje a bővítményt</b>, amennyiben segítette a munkáját:',
+    'permission' => 'Külsős bővítmények kezelése'
 ];

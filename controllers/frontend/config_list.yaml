@@ -3,7 +3,7 @@
 # ===================================
 
 title: indikator.plugins::lang.plugin.name
-list: @/plugins/indikator/plugins/models/frontend/columns.yaml
+list: ~/plugins/indikator/plugins/models/frontend/columns.yaml
 modelClass: Indikator\Plugins\Models\Frontend
 recordUrl: indikator/plugins/frontend/update/:id
 noRecordsMessage: backend::lang.list.no_records

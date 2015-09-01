@@ -24,6 +24,7 @@ class Plugin extends PluginBase
                 'label'       => 'indikator.plugins::lang.plugin.name',
                 'description' => 'indikator.plugins::lang.plugin.description',
                 'icon'        => 'icon-cubes',
+                'permissions' => ['indikator.plugins.all'],
                 'url'         => Backend::url('indikator/plugins/frontend'),
                 'category'    => SettingsManager::CATEGORY_CMS
             ]
@@ -36,6 +37,16 @@ class Plugin extends PluginBase
             'Indikator\Plugins\ReportWidgets\Plugins' => [
                 'label'   => 'indikator.plugins::lang.plugin.name',
                 'context' => 'dashboard'
+            ]
+        ];
+    }
+
+    public function registerPermissions()
+    {
+        return [
+            'indikator.plugins.all' => [
+                'tab'   => 'system::lang.permissions.name',
+                'label' => 'indikator.plugins::lang.permission'
             ]
         ];
     }

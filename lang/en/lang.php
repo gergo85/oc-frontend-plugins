@@ -24,8 +24,11 @@ return [
     ],
     'stat' => [
         'total' => 'Total',
+        'size' => 'Size',
         'folders' => 'folders',
-        'files' => 'files'
+        'pieces' => 'piece|pieces',
+        'files' => 'files',
+        'img' => 'IMG'
     ],
     'widget' => [
         'show_total' => 'Show total',
@@ -37,5 +40,7 @@ return [
     'flash' => [
         'delete' => 'Do you really want to delete this items?',
         'remove' => 'Successfully removed those items.'
-    ]
+    ],
+    'hint' => 'Please <b>rate this plugin</b> if it helped your work:',
+    'permission' => 'Manage the front-end plugins'
 ];

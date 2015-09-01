@@ -5,3 +5,6 @@
 1.0.2: Added prefix to database.
 1.0.3: Changed the first bar chart to pie.
 1.0.4: Improved the widget exception handling.
+1.0.5: Added the image statistics.
+1.0.6: Redesigned the statistics.
+1.0.7: Added the permission setting.

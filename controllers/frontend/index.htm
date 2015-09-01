@@ -7,74 +7,49 @@
 <?php
 
 use Cms\Classes\Theme;
-$theme = Theme::getEditTheme()->getDirName();
-
 use Backend\Models\UserPreferences;
+
+$theme = Theme::getEditTheme()->getDirName();
 $preferences = UserPreferences::forUser()->get('backend::backend.preferences');
+$themeFolder = 'themes/'.$theme.'/assets/';
 
-function fp_folderstat($folder = 'themes')
-{
-    $attr['size'] = $attr['files'] = $attr['folders'] = 0;
+if (File::exists($themeFolder.'javascript')) $assets['js'] = 'javascript';
+else $assets['js'] = 'js';
 
-    if (!File::exists($folder)) {
-        File::makeDirectory($folder, 0775, true);
-    }
+if (File::exists($themeFolder.'stylesheets')) $assets['css'] = 'stylesheets';
+else $assets['css'] = 'css';
 
-    $elementents = scandir($folder);
-    foreach ($elementents as $element) {
-        if ($element != '.' && $element != '..' && $element != '.quarantine' && $element != '.tmb') {
-            if (filetype($folder.'/'.$element) == 'dir') {
-                $value = fp_folderstat($folder.'/'.$element);
-                $attr['size'] += $value['size'];
-                $attr['files'] += $value['files'];
-                $attr['folders'] += $value['folders'] + 1;
-            }
+if (File::exists($themeFolder.'images')) $assets['img'] = 'images';
+else $assets['img'] = 'img';
 
-            else {
-                $attr['size'] += File::size($folder.'/'.$element);
-                $attr['files']++;
-            }
-        }
-    }
+$stat = [
+    'js'  => $this->pluginFolderStat($themeFolder.$assets['js']),
+    'css' => $this->pluginFolderStat($themeFolder.$assets['css']),
+    'img' => $this->pluginFolderStat($themeFolder.$assets['img'])
+];
 
-    return $attr;
-}
+$size = [
+    'js'  => explode(' ', $this->pluginFileSize($stat['js']['size'])),
+    'css' => explode(' ', $this->pluginFileSize($stat['css']['size'])),
+    'img' => explode(' ', $this->pluginFileSize($stat['img']['size']))
+];
 
-function fp_filesize($size = 0)
-{
-    if ($size > 0) {
-        $name = ['B', 'KB', 'MB'];
-        $common = ['au', 'bn', 'bw', 'ch', 'cn', 'do', 'eg', 'gt', 'hk', 'hn', 'ie', 'il', 'in', 'jp', 'ke', 'kp', 'kr', 'lb', 'lk', 'mn', 'mo', 'mt', 'mx', 'my', 'ng', 'ni', 'np', 'nz', 'pa', 'ph', 'pk', 'sg', 'th', 'tw', 'tz', 'ug', 'uk', 'us', 'zw'];
-
-        for ($i = 0; $size >= 1024; $i++) {
-            $size /= 1024;
-            if ($i < 1) $size = round($size, 0);
-            else $size = round($size, 1);
-        }
-
-        global $preferences;
-
-        if (!in_array($preferences['locale'], $common)) {
-            $size = str_replace('.', ',', $size);
-        }
-
-        return $size.' '.$name[$i];
-    }
-
-    $size = '0 '.'B';
-
-    return $size;
-}
-
-$stat['js'] = fp_folderstat('themes/'.$theme.'/assets/js');
-$stat['css'] = fp_folderstat('themes/'.$theme.'/assets/css');
+$pieces = [
+    'total'   => DB::table('indikator_frontend_plugins')->count(),
+    'files'   => $stat['js']['files'] + $stat['css']['files'] + $stat['img']['files'],
+    'folders' => $stat['js']['folders'] + $stat['css']['folders'] + $stat['img']['folders']
+];
 
 ?>
 <div class="scoreboard">
+    <div class="container-flush">
+        <?= $this->makeHintPartial('indikator_plugins_hint', 'hint') ?>
+    </div>
     <div data-control="toolbar">
         <div class="scoreboard-item title-value">
             <h4><?= e(trans('indikator.plugins::lang.stat.total')) ?></h4>
-            <p><?= DB::table('indikator_frontend_plugins')->count() ?></p>
+            <p><?= $pieces['total'] ?></p>
+            <p class="description"><?= e(trans_choice('indikator.plugins::lang.stat.pieces', $pieces['total'])) ?></p>
         </div>
         <div class="scoreboard-item control-chart" data-control="chart-pie">
             <ul>
@@ -83,24 +58,44 @@ $stat['css'] = fp_folderstat('themes/'.$theme.'/assets/css');
                 <li data-color="#e2e17f">CSS <span><?= DB::table('indikator_frontend_plugins')->where('language', '3')->count() ?></span></li>
             </ul>
         </div>
+
         <div class="scoreboard-item title-value">
-            <h4>JS</h4>
-            <p><?= fp_filesize($stat['js']['size']) ?></p>
+            <h4>JS <?= e(trans('indikator.plugins::lang.stat.size')) ?></h4>
+            <p><?= $size['js'][0] ?></p>
+            <p class="description"><?= $size['js'][1] ?></p>
         </div>
-        <div class="scoreboard-item control-chart" data-control="chart-bar">
+        <div class="scoreboard-item title-value">
+            <h4>CSS <?= e(trans('indikator.plugins::lang.stat.size')) ?></h4>
+            <p><?= $size['css'][0] ?></p>
+            <p class="description"><?= $size['css'][1] ?></p>
+        </div>
+        <div class="scoreboard-item title-value">
+            <h4><?= e(trans('indikator.plugins::lang.stat.img')) ?> <?= e(trans('indikator.plugins::lang.stat.size')) ?></h4>
+            <p><?= $size['img'][0] ?></p>
+            <p class="description"><?= $size['img'][1] ?></p>
+        </div>
+        <div class="scoreboard-item title-value">
+            <h4><?= e(trans('indikator.plugins::lang.stat.files')) ?></h4>
+            <p><?= $pieces['files'] ?></p>
+            <p class="description"><?= e(trans_choice('indikator.plugins::lang.stat.pieces', $pieces['files'])) ?></p>
+        </div>
+        <div class="scoreboard-item control-chart" data-control="chart-pie">
             <ul>
-                <li data-color="#8892bf">JS <?= e(trans('indikator.plugins::lang.stat.folders')) ?><span><?= $stat['js']['folders'] ?></span></li>
-                <li data-color="#e2e17f">JS <?= e(trans('indikator.plugins::lang.stat.files')) ?><span><?= $stat['js']['files'] ?></span></li>
+                <li data-color="#e27f7f">JS <span><?= $stat['js']['files'] ?></span></li>
+                <li data-color="#e2e17f">CSS <span><?= $stat['css']['files'] ?></span></li>
+                <li data-color="#96be58"><?= e(trans('indikator.plugins::lang.stat.img')) ?> <span><?= $stat['img']['files'] ?></span></li>
             </ul>
         </div>
         <div class="scoreboard-item title-value">
-            <h4>CSS</h4>
-            <p><?= fp_filesize($stat['css']['size']) ?></p>
+            <h4><?= e(trans('indikator.plugins::lang.stat.folders')) ?></h4>
+            <p><?= $pieces['folders'] ?></p>
+            <p class="description"><?= e(trans_choice('indikator.plugins::lang.stat.pieces', $pieces['folders'])) ?></p>
         </div>
-        <div class="scoreboard-item control-chart" data-control="chart-bar">
+        <div class="scoreboard-item control-chart" data-control="chart-pie">
             <ul>
-                <li data-color="#8892bf">CSS <?= e(trans('indikator.plugins::lang.stat.folders')) ?><span><?= $stat['css']['folders'] ?></span></li>
-                <li data-color="#e2e17f">CSS <?= e(trans('indikator.plugins::lang.stat.files')) ?><span><?= $stat['css']['files'] ?></span></li>
+                <li data-color="#e27f7f">JS <span><?= $stat['js']['folders'] ?></span></li>
+                <li data-color="#e2e17f">CSS <span><?= $stat['css']['folders'] ?></span></li>
+                <li data-color="#96be58"><?= e(trans('indikator.plugins::lang.stat.img')) ?> <span><?= $stat['img']['folders'] ?></span></li>
             </ul>
         </div>
     </div>
