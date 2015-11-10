@@ -4,6 +4,7 @@
 
 name: indikator.plugins::lang.plugin.title
 form: ~/plugins/indikator/plugins/models/frontend/fields.yaml
+
 modelClass: Indikator\Plugins\Models\Frontend
 defaultRedirect: indikator/plugins/frontend
 
