@@ -6,6 +6,9 @@ if ($record->language == 1) {
 else if ($record->language == 2) {
     echo 'PHP';
 }
-else {
+else if ($record->language == 3) {
     echo 'CSS';
+}
+else {
+    echo Lang::get('indikator.plugins::lang.form.font');
 }

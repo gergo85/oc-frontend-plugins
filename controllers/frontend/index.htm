@@ -13,14 +13,26 @@ $theme = Theme::getEditTheme()->getDirName();
 $preferences = UserPreferences::forUser()->get('backend::backend.preferences');
 $themeFolder = 'themes/'.$theme.'/assets/';
 
-if (File::exists($themeFolder.'javascript')) $assets['js'] = 'javascript';
-else $assets['js'] = 'js';
+if (File::exists($themeFolder.'javascript')) {
+    $assets['js'] = 'javascript';
+}
+else {
+    $assets['js'] = 'js';
+}
 
-if (File::exists($themeFolder.'stylesheets')) $assets['css'] = 'stylesheets';
-else $assets['css'] = 'css';
+if (File::exists($themeFolder.'stylesheets')) {
+    $assets['css'] = 'stylesheets';
+}
+else {
+    $assets['css'] = 'css';
+}
 
-if (File::exists($themeFolder.'images')) $assets['img'] = 'images';
-else $assets['img'] = 'img';
+if (File::exists($themeFolder.'images')) {
+    $assets['img'] = 'images';
+}
+else {
+    $assets['img'] = 'img';
+}
 
 $stat = [
     'js'  => $this->pluginFolderStat($themeFolder.$assets['js']),
@@ -37,7 +49,8 @@ $size = [
 $pieces = [
     'total'   => DB::table('indikator_frontend_plugins')->count(),
     'files'   => $stat['js']['files'] + $stat['css']['files'] + $stat['img']['files'],
-    'folders' => $stat['js']['folders'] + $stat['css']['folders'] + $stat['img']['folders']
+    'folders' => $stat['js']['folders'] + $stat['css']['folders'] + $stat['img']['folders'],
+    'font'    => DB::table('indikator_frontend_plugins')->where('language', 4)->count()
 ];
 
 ?>
@@ -97,6 +110,11 @@ $pieces = [
                 <li data-color="#e2e17f">CSS <span><?= $stat['css']['folders'] ?></span></li>
                 <li data-color="#96be58"><?= e(trans('indikator.plugins::lang.stat.img')) ?> <span><?= $stat['img']['folders'] ?></span></li>
             </ul>
+        </div>
+        <div class="scoreboard-item title-value">
+            <h4><?= e(trans('indikator.plugins::lang.form.font')) ?></h4>
+            <p><?= $pieces['font'] ?></p>
+            <p class="description"><?= e(trans_choice('indikator.plugins::lang.stat.pieces', $pieces['font'])) ?></p>
         </div>
     </div>
 </div>

@@ -11,7 +11,8 @@ return [
         'name' => 'Name',
         'webpage' => 'Webpage',
         'version' => 'Version',
-        'language' => 'Language',
+        'language' => 'Type',
+        'font' => 'Font',
         'theme' => 'Theme',
         'description' => 'Description',
         'common' => 'Common',
@@ -35,6 +36,7 @@ return [
         'show_js' => 'Show JavaScript',
         'show_php' => 'Show PHP',
         'show_css' => 'Show CSS',
+        'show_font' => 'Show Font',
         'total' => 'Total'
     ],
     'flash' => [

@@ -2,7 +2,7 @@
 
 return [
     'plugin' => [
-        'name' => 'Bővítmények',
+        'name' => 'Kiegészítők',
         'description' => 'A publikus felületen használt komponensek listája.',
         'author' => 'Szabó Gergő',
         'title' => 'bővítmény'
@@ -11,7 +11,8 @@ return [
         'name' => 'Név',
         'webpage' => 'Weboldal',
         'version' => 'Verzió',
-        'language' => 'Nyelv',
+        'language' => 'Típus',
+        'font' => 'Betűtípus',
         'theme' => 'Téma',
         'description' => 'Leírás',
         'common' => 'Megjegyzés',
@@ -19,7 +20,7 @@ return [
         'updated' => 'Módosítva'
     ],
     'button' => [
-        'new' => 'Új bővítmény',
+        'new' => 'Új kiegészítő',
         'return' => 'Vissza'
     ],
     'stat' => [
@@ -35,6 +36,7 @@ return [
         'show_js' => 'JavaScript mutatása',
         'show_php' => 'PHP mutatása',
         'show_css' => 'CSS mutatása',
+        'show_font' => 'Betűtípus mutatása',
         'total' => 'Összes'
     ],
     'flash' => [
@@ -42,5 +44,5 @@ return [
         'remove' => 'A tételek sikeresen eltávolításra kerültek.'
     ],
     'hint' => 'Kérjük <b>értékelje a bővítményt</b>, amennyiben segítette a munkáját:',
-    'permission' => 'Külsős bővítmények kezelése'
+    'permission' => 'Külsős fejlesztések kezelése'
 ];

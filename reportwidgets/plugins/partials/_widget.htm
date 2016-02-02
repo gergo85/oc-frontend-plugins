@@ -24,9 +24,16 @@
     <?php endif ?>
 
     <?php if ($this->property('php')): ?>
-    <div class="scoreboard-item title-value pull-left" style="margin:20px 0 0 0;">
+    <div class="scoreboard-item title-value pull-left" style="margin:20px 20px 0 0;">
         <h4>CSS</h4>
         <p class="text-center"><?= $css ?></p>
+    </div>
+    <?php endif ?>
+
+    <?php if ($this->property('font')): ?>
+    <div class="scoreboard-item title-value pull-left" style="margin:20px 0 0 0;">
+        <h4><?= e(trans('indikator.plugins::lang.form.font')) ?></h4>
+        <p class="text-center"><?= $font ?></p>
     </div>
     <?php endif ?>
 

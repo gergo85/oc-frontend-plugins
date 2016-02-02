@@ -36,6 +36,7 @@ secondaryTabs:
                 1: JavaScript
                 2: PHP
                 3: CSS
+                4: indikator.plugins::lang.form.font
             default: 1
 
         version:

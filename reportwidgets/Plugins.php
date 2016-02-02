@@ -47,6 +47,11 @@ class Plugins extends ReportWidgetBase
                 'title'             => 'indikator.plugins::lang.widget.show_css',
                 'default'           => true,
                 'type'              => 'checkbox'
+            ],
+            'font' => [
+                'title'             => 'indikator.plugins::lang.widget.show_font',
+                'default'           => true,
+                'type'              => 'checkbox'
             ]
         ];
     }
@@ -57,5 +62,6 @@ class Plugins extends ReportWidgetBase
         $this->vars['js'] = DB::table('indikator_frontend_plugins')->where('language', '1')->count();
         $this->vars['php'] = DB::table('indikator_frontend_plugins')->where('language', '2')->count();
         $this->vars['css'] = DB::table('indikator_frontend_plugins')->where('language', '3')->count();
+        $this->vars['font'] = DB::table('indikator_frontend_plugins')->where('language', '4')->count();
     }
 }

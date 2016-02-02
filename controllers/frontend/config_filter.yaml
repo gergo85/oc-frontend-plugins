@@ -18,3 +18,8 @@ scopes:
         label: CSS
         type: checkbox
         conditions: language = 3
+
+    font:
+        label: indikator.plugins::lang.form.font
+        type: checkbox
+        conditions: language = 4
