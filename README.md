@@ -6,7 +6,7 @@ List of components which are use in front-end. So you won't forget the name and 
 * hu - Magyar
 
 ###Installation
-1. Go to the __Settings -> Updates__ page in Backend.
+1. Go to the __Settings > Updates__ page in Backend.
 1. Click on the __Install Plugins__ button.
 1. Type the __Front-end Plugins__ in search field.
 
