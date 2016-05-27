@@ -1,4 +1,4 @@
-##Front-end plugins list for OctoberCMS
+##Front-end plugins
 List of components which are use in front-end. So you won't forget the name and version of usage plugins, and it is easier update them too.
 
 ###Available languages
