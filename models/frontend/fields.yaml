@@ -28,20 +28,20 @@ fields:
 secondaryTabs:
     fields:
 
-        language:
-            label: indikator.plugins::lang.form.language
-            required: true
-            type: dropdown
-            options:
-                1: JavaScript
-                2: PHP
-                3: CSS
-                4: indikator.plugins::lang.form.font
-            default: 1
-
         version:
             label: indikator.plugins::lang.form.version
 
         theme:
             label: indikator.plugins::lang.form.theme
             type: dropdown
+
+        language:
+            label: indikator.plugins::lang.form.language
+            required: true
+            type: radio
+            options:
+                1: JavaScript
+                2: PHP
+                3: CSS
+                4: indikator.plugins::lang.form.font
+            default: 1
