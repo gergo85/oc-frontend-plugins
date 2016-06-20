@@ -5,6 +5,12 @@
         <?= e(trans('indikator.plugins::lang.button.new')) ?>
     </a>
     <button
+        class="btn btn-succes oc-icon-refresh"
+        data-request="onSearchPlugins"
+        data-stripe-load-indicator>
+        <?= e(trans('indikator.plugins::lang.button.search')) ?>
+    </button>
+    <button
         class="btn btn-default oc-icon-trash-o"
         disabled="disabled"
         onclick="$(this).data('request-data', {

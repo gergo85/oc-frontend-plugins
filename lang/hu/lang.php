@@ -21,6 +21,7 @@ return [
     ],
     'button' => [
         'new' => 'Új kiegészítő',
+        'search' => 'Keresés',
         'return' => 'Vissza'
     ],
     'stat' => [
@@ -40,6 +41,7 @@ return [
         'total' => 'Összes'
     ],
     'flash' => [
+        'search' => 'Összesen %s új kiegészítőt találtunk.',
         'delete' => 'Valóban törölni akarja a tételeket?',
         'remove' => 'A tételek sikeresen eltávolításra kerültek.'
     ],

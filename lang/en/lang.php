@@ -2,8 +2,8 @@
 
 return [
     'plugin' => [
-        'name' => 'Front-end plugins',
-        'description' => 'List of components which are use in front-end.',
+        'name' => 'Frontend plugins',
+        'description' => 'List of components which are use in frontend.',
         'author' => 'Gergő Szabó',
         'title' => 'plugin'
     ],
@@ -21,6 +21,7 @@ return [
     ],
     'button' => [
         'new' => 'New plugin',
+        'search' => 'Search plugins',
         'return' => 'Return'
     ],
     'stat' => [
@@ -40,9 +41,10 @@ return [
         'total' => 'Total'
     ],
     'flash' => [
+        'search' => 'We found the %s new plugin(s).',
         'delete' => 'Do you really want to delete this items?',
         'remove' => 'Successfully removed those items.'
     ],
     'hint' => 'Please <b>rate this plugin</b> if it helped your work:',
-    'permission' => 'Manage the front-end plugins'
+    'permission' => 'Manage the frontend plugins'
 ];

@@ -1,5 +1,5 @@
 1.0.0:
-    - First version of Front-end Plugins.
+    - First version of Frontend Plugins.
     - create_plugins_table.php
 1.0.1: Minor improvements and bugfixes.
 1.0.2: Added prefix to database.
@@ -12,3 +12,4 @@
 1.0.9: Minor improvements.
 1.1.0: Added the Font option for Type.
 1.1.1: Minor UI improvements.
+1.2.0: Added the plugin detection feature.

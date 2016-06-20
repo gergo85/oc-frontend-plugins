@@ -16,14 +16,14 @@ class frontend extends Model
     {
         $themes = [];
 
-        if ($handle = opendir('themes')) {
-            while (false !== ($item = readdir($handle))) {
-                if ($item != '.' && $item != '..') {
-                    $themes[$item] = $item;
+        if ($folders = opendir('themes')) {
+            while (false !== ($folder = readdir($folders))) {
+                if ($folder != '.' && $folder != '..') {
+                    $themes[$folder] = $folder;
                 }
             }
 
-            closedir($handle);
+            closedir($folders);
         }
 
         return $themes;

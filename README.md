@@ -1,5 +1,10 @@
-##Front-end plugins
+##Frontend plugins
 List of components which are use in front-end. So you won't forget the name and version of usage plugins, and it is easier update them too.
+
+###Main features
+* __Automatic plugin detection__
+* Grouping and filtering plugins
+* Detailed statistics and graph
 
 ###Available languages
 * en - English
