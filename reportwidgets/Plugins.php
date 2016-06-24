@@ -58,10 +58,10 @@ class Plugins extends ReportWidgetBase
 
     protected function loadData()
     {
-        $this->vars['total'] = DB::table('indikator_frontend_plugins')->count();
-        $this->vars['js'] = DB::table('indikator_frontend_plugins')->where('language', '1')->count();
-        $this->vars['php'] = DB::table('indikator_frontend_plugins')->where('language', '2')->count();
-        $this->vars['css'] = DB::table('indikator_frontend_plugins')->where('language', '3')->count();
-        $this->vars['font'] = DB::table('indikator_frontend_plugins')->where('language', '4')->count();
+        $this->vars['js']    = DB::table('indikator_frontend_plugins')->where('language', '1')->count();
+        $this->vars['php']   = DB::table('indikator_frontend_plugins')->where('language', '2')->count();
+        $this->vars['css']   = DB::table('indikator_frontend_plugins')->where('language', '3')->count();
+        $this->vars['font']  = DB::table('indikator_frontend_plugins')->where('language', '4')->count();
+        $this->vars['total'] = $this->vars['js'] + $this->vars['php'] + $this->vars['css'] + $this->vars['font'];
     }
 }

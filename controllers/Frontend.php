@@ -65,7 +65,7 @@ class Frontend extends Controller
                                             continue;
                                         }
 
-                                        $this->insertToDatabase($name, 'https://www.google.com/fonts', '', 4, $theme);
+                                        $this->insertToDatabase($name, 'https://www.google.com/fonts', '', 4, $theme, 'web_font');
 
                                         $count++;
                                     }
@@ -78,7 +78,7 @@ class Frontend extends Controller
 
                                         $array = explode('/', substr($href, strpos($href, '//') + 2));
 
-                                        $this->insertToDatabase('Bootstrap', 'http://getbootstrap.com/css', $array[2], 3, $theme);
+                                        $this->insertToDatabase('Bootstrap', 'http://getbootstrap.com/css', $array[2], 3, $theme, 'bootstrap_css');
 
                                         $count++;
                                     }
@@ -110,9 +110,16 @@ class Frontend extends Controller
 
                                         $version = '';
 
+                                        $description = [
+                                            'animate',
+                                            'bootstrap_css',
+                                            'font_awesome',
+                                            'normalize'
+                                        ];
+
                                         foreach ($file as $key => $value) {
                                             if (substr_count($href, $value) > 0) {
-                                                $this->insertToDatabase($name[$key], $webpage[$key], '', 3, $theme);
+                                                $this->insertToDatabase($name[$key], $webpage[$key], '', 3, $theme, $description[$key]);
                                             }
                                         }
                                     }
@@ -125,7 +132,7 @@ class Frontend extends Controller
                                     /* CDN */
                                     if (substr_count($src, '//') == 1) {
                                         $array = explode('/', substr($src, strpos($src, '//') + 2));
-                                        $webpage = '';
+                                        $webpage = $description = '';
 
                                         if (substr_count($src, 'code.jquery') == 1) {
                                             $name = 'jQuery';
@@ -151,36 +158,42 @@ class Frontend extends Controller
                                             $name = 'Bootstrap';
                                             $version = $array[2];
                                             $webpage = 'http://getbootstrap.com/javascript';
+                                            $description = 'bootstrap_js';
                                         }
                                         else if (substr_count($src, 'cdn.tinymce') == 1) {
                                             $name = 'TinyMCE';
                                             $version = $array[1];
                                             $webpage = 'https://www.tinymce.com';
+                                            $description = 'tinymce';
                                         }
                                         else if (substr_count($src, 'cdn.datatables') == 1) {
                                             $name = 'DataTables';
                                             $version = $array[1];
                                             $webpage = 'https://datatables.net';
+                                            $description = 'datatables';
                                         }
 
                                         if ($name == 'Jquery' || $name == 'jQuery') {
                                             $name = 'jQuery';
                                             $webpage = 'http://jquery.com';
+                                            $description = 'jquery';
                                         }
                                         else if ($name == 'Jqueryui' || $name == 'Jquery.ui') {
                                             $name = 'jQuery UI';
-                                            $webpage = 'http://ui.jquery.com';
+                                            $webpage = 'http://jqueryui.com';
+                                            $description = 'jquery_ui';
                                         }
                                         else if ($name == 'Angularjs') {
                                             $name = 'AngularJS';
                                             $webpage = 'https://angularjs.org';
+                                            $description = 'angularjs';
                                         }
 
                                         if (DB::table('indikator_frontend_plugins')->where('name', $name)->whereOr('name', lcfirst($name))->count() > 0) {
                                             continue;
                                         }
 
-                                        $this->insertToDatabase($name, $webpage, $version, 1, $theme);
+                                        $this->insertToDatabase($name, $webpage, $version, 1, $theme, $description);
 
                                         $count++;
                                     }
@@ -205,23 +218,31 @@ class Frontend extends Controller
                                                 ']|theme }}'
                                             ], '', $js)));
 
-                                            if ($name == 'Angular') {
+                                            if ($name == 'Jquery') {
+                                                $name = 'jQuery';
+                                                $webpage = 'http://jquery.com';
+                                                $description = 'jquery';
+                                            }
+                                            else if ($name == 'Angular') {
                                                 $name = 'AngularJS';
                                                 $webpage = 'https://angularjs.org';
+                                                $description = 'angularjs';
                                             }
                                             else if ($name == 'Modernizr') {
                                                 $webpage = 'https://modernizr.com';
+                                                $description = 'modernizr';
                                             }
                                             else if ($name == 'Wow') {
                                                 $name = 'WOW';
                                                 $webpage = 'http://mynameismatthieu.com/WOW';
+                                                $description = 'wow';
                                             }
 
                                             if (DB::table('indikator_frontend_plugins')->where('name', $name)->where('language', 1)->count() > 0 || substr_count($name, 'Bootstrap/js/') > 0 || $name == 'Script' || $name == 'Theme' || $name == 'Theme-functions' || $name == 'Custom' || $name == 'App' || $name == 'Main' || $name == 'Own') {
                                                 continue;
                                             }
 
-                                            $this->insertToDatabase($name, $webpage, '', 1, $theme);
+                                            $this->insertToDatabase($name, $webpage, '', 1, $theme, $description);
 
                                             $count++;
                                         }
@@ -243,7 +264,7 @@ class Frontend extends Controller
         return $this->listRefresh('manage');
     }
 
-    public function insertToDatabase($name = '', $webpage = '', $version = '', $language = 1, $theme = '')
+    public function insertToDatabase($name = '', $webpage = '', $version = '', $language = 1, $theme = '', $description = '')
     {
         DB::table('indikator_frontend_plugins')->insertGetId([
             'name' => $name,
@@ -251,7 +272,7 @@ class Frontend extends Controller
             'version' => $version,
             'language' => $language,
             'theme' => $theme,
-            'description' => '',
+            'description' => Lang::get('indikator.plugins::lang.3rd_plugin.'.$description),
             'common' => '',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')

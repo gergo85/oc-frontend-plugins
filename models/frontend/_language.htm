@@ -1,14 +1,11 @@
 <?php
 
-if ($record->language == 1) {
-    echo 'JavaScript';
-}
-else if ($record->language == 2) {
-    echo 'PHP';
-}
-else if ($record->language == 3) {
-    echo 'CSS';
-}
-else {
-    echo Lang::get('indikator.plugins::lang.form.font');
-}
+$name = [
+    '',
+    'JavaScript',
+    'PHP',
+    'CSS',
+    Lang::get('indikator.plugins::lang.form.font')
+];
+
+echo $name[$record->language];

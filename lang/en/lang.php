@@ -2,7 +2,7 @@
 
 return [
     'plugin' => [
-        'name' => 'Frontend plugins',
+        'name' => 'Frontend Plugins',
         'description' => 'List of components which are use in frontend.',
         'author' => 'Gergő Szabó',
         'title' => 'plugin'
@@ -46,5 +46,20 @@ return [
         'remove' => 'Successfully removed those items.'
     ],
     'hint' => 'Please <b>rate this plugin</b> if it helped your work:',
-    'permission' => 'Manage the frontend plugins'
+    'permission' => 'Manage the frontend plugins',
+    '3rd_plugin' => [
+        'web_font' => 'Open-source font optimized for the web.',
+        'bootstrap_css' => 'The most popular CSS framework.',
+        'animate' => 'A cross-browser library of CSS animations.',
+        'font_awesome' => 'The iconic font and CSS toolkit.',
+        'normalize' => 'A modern, HTML5-ready alternative to CSS resets.',
+        'bootstrap_js' => 'The most popular JavaScript framework.',
+        'tinymce' => 'Full featured web-based WYSIWYG editor.',
+        'datatables' => 'Highly flexible tool for any HTML table.',
+        'jquery' => 'A fast, small, and feature-rich library.',
+        'jquery_ui' => 'Interactions and widgets for the web.',
+        'angularjs' => 'HTML enhanced for web apps!',
+        'modernizr' => 'Respond to your user’s browser features.',
+        'wow' => 'Reveals animations when you scroll.'
+    ]
 ];

@@ -46,5 +46,20 @@ return [
         'remove' => 'A tételek sikeresen eltávolításra kerültek.'
     ],
     'hint' => 'Kérjük <b>értékelje a bővítményt</b>, amennyiben segítette a munkáját:',
-    'permission' => 'Külsős fejlesztések kezelése'
+    'permission' => 'Külsős fejlesztések kezelése',
+    '3rd_plugin' => [
+        'web_font' => 'Webes használatra optimalizált betűtípus.',
+        'bootstrap_css' => 'A legnépszerűbb CSS keretrendszer.',
+        'animate' => 'Böngésző-független CSS animációk.',
+        'font_awesome' => 'Betűtípus-alapú ikon gyűjtemény.',
+        'normalize' => 'CSS formázások egységesítése.',
+        'bootstrap_js' => 'A legnépszerűbb JS keretrendszer.',
+        'tinymce' => 'A legnépszerűbb webes szövegszerkesztő.',
+        'datatables' => 'Fejlett és testreszabható táblázatok.',
+        'jquery' => 'Gyors, kicsi és nagytudású JS könyvtár.',
+        'jquery_ui' => 'Interaktív felhasználói elemek gyűjteménye.',
+        'angularjs' => 'Webes alkalmazások továbbfejlesztése.',
+        'modernizr' => 'A böngészők működésének modernizálása.',
+        'wow' => 'Animációk megjelenítése görgetéskor.'
+    ]
 ];

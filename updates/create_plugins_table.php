@@ -14,7 +14,7 @@ class CreatePluginsTable extends Migration
             $table->string('name', 100);
             $table->string('webpage', 100);
             $table->string('version', 10);
-            $table->string('language', 10);
+            $table->string('language', 1);
             $table->string('theme', 100);
             $table->text('description')->nullable();
             $table->text('common')->nullable();

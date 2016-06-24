@@ -33,6 +33,7 @@ secondaryTabs:
 
         theme:
             label: indikator.plugins::lang.form.theme
+            required: true
             type: dropdown
 
         language:

@@ -6,16 +6,44 @@ List of components which are use in front-end. So you won't forget the name and 
 * Grouping and filtering plugins
 * Detailed statistics and graph
 
+###Plugin detection
+Supported CDNs
+* [Google CDN](https://developers.google.com/speed/libraries)
+* [Microsoft CDN](https://www.asp.net)
+* [CDNJS CDN](https://cdnjs.com)
+* [jsDelivr CDN](https://www.jsdelivr.com)
+
+Supported web fonts
+* [Google Fonts](https://www.google.com/fonts)
+* [Font Awesome](http://fontawesome.io/icons)
+
+Supported CSS plugins
+* [Animate](https://daneden.github.io/animate.css)
+* [Bootstrap](http://getbootstrap.com)
+* [Normalize](https://necolas.github.io/normalize.css)
+
+Supported JS plugins
+* [jQuery](http://jquery.com)
+* [jQuery UI](http://jqueryui.com)
+* [AngularJS](https://angularjs.org)
+* [DataTables](https://datatables.net)
+* [Modernizr](https://modernizr.com)
+* [TinyMCE](https://www.tinymce.com)
+* [WOW](http://mynameismatthieu.com/WOW)
+
+Supported other plugins
+* The plugin can finding and listing other JavaScript plugins too without version number and description.
+
 ###Available languages
 * en - English
 * hu - Magyar
 
 ###Installation
-1. Go to the __Settings > Updates__ page in Backend.
-1. Click on the __Install Plugins__ button.
-1. Type the __Front-end Plugins__ in search field.
+1. Go to the __Settings > Updates & Plugins__ page in the Backend.
+1. Click on the __Install plugins__ button.
+1. Type the __Frontend Plugins__ text in the search field.
 
 ###Add widget
-1. Go to the __Dashboard__ page in Backend.
-1. Click on the __Add widget__ button.
-1. __Select__ the current widget from the list.
+1. Go to the __Dashboard__ page in the Backend.
+1. Click on the __Manage widgets > Add widget__ button.
+1. Select the __Frontend Plugins widget__ from the list.

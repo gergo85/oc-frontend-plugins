@@ -9,7 +9,9 @@ class frontend extends Model
     protected $table = 'indikator_frontend_plugins';
 
     public $rules = [
-        'name' => 'required|between:1,100'
+        'name'     => 'required|between:1,100',
+        'theme'    => 'required|between:1,100',
+        'language' => 'required|between:1,4|numeric'
     ];
 
     public function getThemeOptions()
