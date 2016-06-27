@@ -49,6 +49,11 @@ class Frontend extends Controller
                                 $html = File::get('themes/'.$theme.'/layouts/'.$layout);
                                 $html = substr($html, strpos($html, '==') + 2);
 
+                                /* Empty */
+                                if ($html == '') {
+                                    continue;
+                                }
+
                                 /* Content */
                                 $dom = new \DOMDocument;
                                 $dom->loadHTML($html);
@@ -61,25 +66,33 @@ class Frontend extends Controller
                                     if (substr_count($href, 'fonts.googleapis') == 1) {
                                         $name = str_replace('+', ' ', substr($href, 34, strpos($href, ':') - 34));
 
+                                        /* Check duplication */
                                         if (DB::table('indikator_frontend_plugins')->where('name', $name)->where('language', 4)->count() > 0) {
                                             continue;
                                         }
 
+                                        /* Add to database */
                                         $this->insertToDatabase($name, 'https://www.google.com/fonts', '', 4, $theme, 'web_font');
 
+                                        /* Plugin couter */
                                         $count++;
                                     }
 
                                     /* Bootstrap */
                                     else if (substr_count($href, 'maxcdn.bootstrapcdn') == 1) {
+                                        /* Check duplication */
                                         if (DB::table('indikator_frontend_plugins')->where('name', 'Bootstrap')->where('language', 3)->count() > 0) {
                                             continue;
                                         }
 
-                                        $array = explode('/', substr($href, strpos($href, '//') + 2));
+                                        /* Plugin details */
+                                        $url = explode('/', substr($href, strpos($href, '//') + 2));
+                                        $data = $this->getPluginDetails('Bootstrap_CSS');
 
-                                        $this->insertToDatabase('Bootstrap', 'http://getbootstrap.com/css', $array[2], 3, $theme, 'bootstrap_css');
+                                        /* Add to database */
+                                        $this->insertToDatabase($data['name'], $data['webpage'], $url[2], 3, $theme, $data['desc']);
 
+                                        /* Plugin couter */
                                         $count++;
                                     }
 
@@ -87,163 +100,160 @@ class Frontend extends Controller
                                     else if (substr_count($href, '{{ [') == 1) {
                                         $href = preg_replace('/\s+/', ' ', trim($href));
 
+                                        /* Plugin filename */
                                         $file = [
                                             'animate.css',
+                                            'bootstrap.css',
                                             'bootstrap.min.css',
                                             'font-awesome.css',
                                             'normalize.css'
                                         ];
 
+                                        /* Plugin name */
                                         $name = [
                                             'Animate',
-                                            'Bootstrap',
-                                            'Font Awesome',
+                                            'Bootstrap_CSS',
+                                            'Bootstrap_CSS',
+                                            'Font_Awesome',
                                             'Normalize'
                                         ];
 
-                                        $webpage = [
-                                            'https://daneden.github.io/animate.css',
-                                            'http://getbootstrap.com/css',
-                                            'http://fontawesome.io/icons',
-                                            'https://necolas.github.io/normalize.css'
-                                        ];
-
-                                        $version = '';
-
-                                        $description = [
-                                            'animate',
-                                            'bootstrap_css',
-                                            'font_awesome',
-                                            'normalize'
-                                        ];
-
+                                        /* Check availability */
                                         foreach ($file as $key => $value) {
                                             if (substr_count($href, $value) > 0) {
-                                                $this->insertToDatabase($name[$key], $webpage[$key], '', 3, $theme, $description[$key]);
+                                                /* Plugin details */
+                                                $data = $this->getPluginDetails($name[$key]);
+
+                                                /* Check duplication */
+                                                if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->count() > 0) {
+                                                    continue;
+                                                }
+
+                                                /* Add to database */
+                                                $this->insertToDatabase($data['name'], $data['webpage'], '', 3, $theme, $data['desc']);
                                             }
                                         }
                                     }
                                 }
 
-                                /* Scripts */
+                                /* JavaScript */
                                 foreach ($dom->getElementsByTagName('script') as $item) {
                                     $src = $item->getAttribute('src');
 
                                     /* CDN */
                                     if (substr_count($src, '//') == 1) {
-                                        $array = explode('/', substr($src, strpos($src, '//') + 2));
-                                        $webpage = $description = '';
+                                        $url = explode('/', substr($src, strpos($src, '//') + 2));
+                                        $data['webpage'] = $data['desc'] = '';
 
+                                        /* jQuery */
                                         if (substr_count($src, 'code.jquery') == 1) {
-                                            $name = 'jQuery';
-                                            $version = substr($array[7], 7, 5);
+                                            $data = $this->getPluginDetails('jQuery');
+                                            $data['version'] = str_replace(['.min', '.js'], '', substr($url[1], 7));
                                         }
+
+                                        /* Google */
                                         else if (substr_count($src, 'ajax.aspnetcdn') == 1) {
-                                            $name = ucfirst($array[2]);
-                                            $version = substr($array[3], 7, 5);
+                                            $data = $this->getPluginDetails(ucfirst($url[2]));
+                                            $data['version'] = substr($url[3], 7, 5);
                                         }
+
+                                        /* Microsoft */
                                         else if (substr_count($src, 'ajax.googleapis') == 1) {
-                                            $name = ucfirst($array[3]);
-                                            $version = $array[4];
+                                            $data = $this->getPluginDetails(ucfirst($url[3]));
+                                            $data['version'] = $url[4];
                                         }
+
+                                        /* CDNJS */
                                         else if (substr_count($src, 'cdnjs.cloudflare') == 1) {
-                                            $name = ucfirst($array[3]);
-                                            $version = $array[4];
+                                            $data = $this->getPluginDetails(ucfirst($url[3]));
+                                            $data['version'] = $url[4];
                                         }
+
+                                        /* jsDelivr */
                                         else if (substr_count($src, 'cdn.jsdelivr') == 1) {
-                                            $name = ucfirst($array[1]);
-                                            $version = $array[2];
+                                            $data = $this->getPluginDetails(ucfirst($url[1]));
+                                            $data['version'] = $url[2];
                                         }
+
+                                        /* Bootstrap */
                                         else if (substr_count($src, 'maxcdn.bootstrapcdn') == 1) {
-                                            $name = 'Bootstrap';
-                                            $version = $array[2];
-                                            $webpage = 'http://getbootstrap.com/javascript';
-                                            $description = 'bootstrap_js';
+                                            $data = $this->getPluginDetails('Bootstrap');
+                                            $data['version'] = $url[2];
                                         }
+
+                                        /* TinyMCE */
                                         else if (substr_count($src, 'cdn.tinymce') == 1) {
-                                            $name = 'TinyMCE';
-                                            $version = $array[1];
-                                            $webpage = 'https://www.tinymce.com';
-                                            $description = 'tinymce';
+                                            $data = $this->getPluginDetails('TinyMCE');
+                                            $data['version'] = $url[1];
                                         }
+
+                                        /* DataTables */
                                         else if (substr_count($src, 'cdn.datatables') == 1) {
-                                            $name = 'DataTables';
-                                            $version = $array[1];
-                                            $webpage = 'https://datatables.net';
-                                            $description = 'datatables';
+                                            $data = $this->getPluginDetails('DataTables');
+                                            $data['version'] = $url[1];
                                         }
 
-                                        if ($name == 'Jquery' || $name == 'jQuery') {
-                                            $name = 'jQuery';
-                                            $webpage = 'http://jquery.com';
-                                            $description = 'jquery';
-                                        }
-                                        else if ($name == 'Jqueryui' || $name == 'Jquery.ui') {
-                                            $name = 'jQuery UI';
-                                            $webpage = 'http://jqueryui.com';
-                                            $description = 'jquery_ui';
-                                        }
-                                        else if ($name == 'Angularjs') {
-                                            $name = 'AngularJS';
-                                            $webpage = 'https://angularjs.org';
-                                            $description = 'angularjs';
-                                        }
-
-                                        if (DB::table('indikator_frontend_plugins')->where('name', $name)->whereOr('name', lcfirst($name))->count() > 0) {
+                                        /* Check duplication */
+                                        if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->count() > 0) {
                                             continue;
                                         }
 
-                                        $this->insertToDatabase($name, $webpage, $version, 1, $theme, $description);
+                                        /* Add to database */
+                                        $this->insertToDatabase($data['name'], $data['webpage'], $data['version'], 1, $theme, $data['desc']);
 
+                                        /* Plugin couter */
                                         $count++;
                                     }
 
                                     /* Self hosted */
-                                    else if (substr_count($src, '{{ [') == 1) {
+                                    else if (substr_count($src, '{{ [') == 1 || substr_count($src, '{{[') == 1) {
                                         $src = preg_replace('/\s+/', ' ', trim($src));
-                                        $array = explode(',', str_replace("'", "", $src));
+                                        $items = explode(',', str_replace("'", "", $src));
 
-                                        foreach ($array as $js) {
-                                            $name = ucfirst(trim(str_replace([
+                                        foreach ($items as $js) {
+                                            /* Remove strings */
+                                            $name = trim(str_replace([
                                                 '{{ [',
+                                                '{{[',
                                                 'assets/js/',
                                                 'assets/javascript/',
                                                 'assets/vendor/',
-                                                '.min.js',
-                                                '.pack.js',
-                                                '.js',
-                                                'jquery.',
                                                 '.custom',
                                                 '-custom',
+                                                '.min',
+                                                '.pack',
+                                                '.js',
+                                                'jquery.',
+                                                'bootstrap.',
+                                                'bootstrap-',
+                                                ']|theme}}',
                                                 ']|theme }}'
-                                            ], '', $js)));
+                                            ], '', $js));
 
-                                            if ($name == 'Jquery') {
-                                                $name = 'jQuery';
-                                                $webpage = 'http://jquery.com';
-                                                $description = 'jquery';
-                                            }
-                                            else if ($name == 'Angular') {
-                                                $name = 'AngularJS';
-                                                $webpage = 'https://angularjs.org';
-                                                $description = 'angularjs';
-                                            }
-                                            else if ($name == 'Modernizr') {
-                                                $webpage = 'https://modernizr.com';
-                                                $description = 'modernizr';
-                                            }
-                                            else if ($name == 'Wow') {
-                                                $name = 'WOW';
-                                                $webpage = 'http://mynameismatthieu.com/WOW';
-                                                $description = 'wow';
+                                            /* Remove subfolders */
+                                            if (substr_count($name, '/') > 0) {
+                                                $path = explode('/', $name);
+                                                $name = $path[count($path) - 1];
                                             }
 
-                                            if (DB::table('indikator_frontend_plugins')->where('name', $name)->where('language', 1)->count() > 0 || substr_count($name, 'Bootstrap/js/') > 0 || $name == 'Script' || $name == 'Theme' || $name == 'Theme-functions' || $name == 'Custom' || $name == 'App' || $name == 'Main' || $name == 'Own') {
+                                            /* Plugin details */
+                                            $data = $this->getPluginDetails($name);
+
+                                            /* Unknown plugin */
+                                            if ($data['webpage'] == '') {
+                                                $data['name'] = ucfirst(str_replace(['.', '-'], ' ', $data['name']));
+                                                $data['desc'] = '';
+                                            }
+
+                                            /* Check duplication */
+                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0 || $data['name'] == 'Script' || $data['name'] == 'Plugins' || $data['name'] == 'Theme' || $data['name'] == 'Theme-functions' || $data['name'] == 'Custom' || $data['name'] == 'App' || $data['name'] == 'Main' || $data['name'] == 'Own') {
                                                 continue;
                                             }
 
-                                            $this->insertToDatabase($name, $webpage, '', 1, $theme, $description);
+                                            /* Add to database */
+                                            $this->insertToDatabase($data['name'], $data['webpage'], '', 1, $theme, $data['desc']);
 
+                                            /* Plugin couter */
                                             $count++;
                                         }
                                     }
@@ -264,18 +274,121 @@ class Frontend extends Controller
         return $this->listRefresh('manage');
     }
 
+    public function getPluginDetails($name = '')
+    {
+        /* Supported plugins */
+        $plugin = [
+            'bootstrap_css' => [
+                'name'    => 'Bootstrap',
+                'webpage' => 'http://getbootstrap.com/css'
+            ],
+            'animate' => [
+                'name'    => 'Animate',
+                'webpage' => 'https://daneden.github.io/animate.css'
+            ],
+            'font_awesome' => [
+                'name'    => 'Font Awesome',
+                'webpage' => 'http://fontawesome.io/icons'
+            ],
+            'normalize' => [
+                'name'    => 'Normalize',
+                'webpage' => 'https://necolas.github.io/normalize.css'
+            ],
+            'bootstrap_js' => [
+                'name'    => 'Bootstrap',
+                'webpage' => 'http://getbootstrap.com/javascript'
+            ],
+            'tinymce' => [
+                'name'    => 'TinyMCE',
+                'webpage' => 'https://www.tinymce.com'
+            ],
+            'datatables' => [
+                'name'    => 'DataTables',
+                'webpage' => 'https://datatables.net'
+            ],
+            'jquery' => [
+                'name'    => 'jQuery',
+                'webpage' => 'http://jquery.com'
+            ],
+            'jquery_ui' => [
+                'name'    => 'jQuery UI',
+                'webpage' => 'http://jqueryui.com'
+            ],
+            'angularjs' => [
+                'name'    => 'AngularJS',
+                'webpage' => 'https://angularjs.org'
+            ],
+            'bxslider' => [
+                'name'    => 'bxSlider',
+                'webpage' => 'http://bxslider.com'
+            ],
+            'isotope' => [
+                'name'    => 'Isotope',
+                'webpage' => 'http://isotope.metafizzy.co'
+            ],
+            'modernizr' => [
+                'name'    => 'Modernizr',
+                'webpage' => 'https://modernizr.com'
+            ],
+            'owl_carousel' => [
+                'name'    => 'OWL Carousel',
+                'webpage' => 'http://www.owlgraphic.com/owlcarousel'
+            ],
+            'wow' => [
+                'name'    => 'WOW',
+                'webpage' => 'http://mynameismatthieu.com/WOW'
+            ]
+        ];
+
+        /* Formating the name */
+        $code = strtolower($name);
+
+        if ($code == 'jquery.ui' || $code == 'jqueryui') {
+            $code = 'jquery_ui';
+        }
+        else if ($code == 'angular') {
+            $code = 'angularjs';
+        }
+        else if ($code == 'bootstrap') {
+            $code = 'bootstrap_js';
+        }
+        else if ($code == 'owl.carousel' || $code == 'owl') {
+            $code = 'owl_carousel';
+        }
+
+        /* Empty details */
+        if (!isset($plugin[$code])) {
+            return [
+                'name'    => $name,
+                'webpage' => '',
+                'desc'    => ''
+            ];
+        }
+
+        /* Details of plugin */
+        return [
+            'name'    => $plugin[$code]['name'],
+            'webpage' => $plugin[$code]['webpage'],
+            'desc'    => $code
+        ];
+    }
+
     public function insertToDatabase($name = '', $webpage = '', $version = '', $language = 1, $theme = '', $description = '')
     {
+        if ($description != '') {
+            $description = Lang::get('indikator.plugins::lang.3rd_plugin.'.$description);
+        }
+
         DB::table('indikator_frontend_plugins')->insertGetId([
-            'name' => $name,
-            'webpage' => $webpage,
-            'version' => $version,
-            'language' => $language,
-            'theme' => $theme,
-            'description' => Lang::get('indikator.plugins::lang.3rd_plugin.'.$description),
-            'common' => '',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
+            'name'        => $name,
+            'webpage'     => $webpage,
+            'version'     => $version,
+            'language'    => $language,
+            'theme'       => $theme,
+            'description' => $description,
+            'common'      => '',
+            'created_at'  => date('Y-m-d H:i:s'),
+            'updated_at'  => date('Y-m-d H:i:s')
         ]);
     }
 
@@ -305,11 +418,11 @@ class Frontend extends Controller
         $elementents = scandir($folder);
 
         foreach ($elementents as $element) {
-            if ($element != '.' && $element != '..' && $element != '.quarantine' && $element != '.tmb') {
+            if ($element != '.' && $element != '..') {
                 if (filetype($folder.'/'.$element) == 'dir') {
                     $value = $this->pluginFolderStat($folder.'/'.$element);
-                    $attr['size'] += $value['size'];
-                    $attr['files'] += $value['files'];
+                    $attr['size']    += $value['size'];
+                    $attr['files']   += $value['files'];
                     $attr['folders'] += $value['folders'] + 1;
                 }
 
@@ -339,8 +452,6 @@ class Frontend extends Controller
                     $size = round($size, 1);
                 }
             }
-
-            global $preferences;
 
             if (!in_array(App::getLocale(), $common)) {
                 $size = str_replace('.', ',', $size);

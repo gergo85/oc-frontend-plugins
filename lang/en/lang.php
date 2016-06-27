@@ -59,7 +59,10 @@ return [
         'jquery' => 'A fast, small, and feature-rich library.',
         'jquery_ui' => 'Interactions and widgets for the web.',
         'angularjs' => 'HTML enhanced for web apps!',
+        'bxslider' => 'The responsive content slider.',
+        'isotope' => 'Filter & sort magical layouts.',
         'modernizr' => 'Respond to your user’s browser features.',
+        'owl_carousel' => 'Touch enabled responsive carousel slider.',
         'wow' => 'Reveals animations when you scroll.'
     ]
 ];

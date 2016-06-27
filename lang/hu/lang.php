@@ -59,7 +59,10 @@ return [
         'jquery' => 'Gyors, kicsi és nagytudású JS könyvtár.',
         'jquery_ui' => 'Interaktív felhasználói elemek gyűjteménye.',
         'angularjs' => 'Webes alkalmazások továbbfejlesztése.',
+        'bxslider' => 'Reszponzív tartalom lapozó.',
+        'isotope' => 'Elemek szűrése és rendezése.',
         'modernizr' => 'A böngészők működésének modernizálása.',
+        'owl_carousel' => 'Mobil-barát, reszponzív kép váltó.',
         'wow' => 'Animációk megjelenítése görgetéskor.'
     ]
 ];

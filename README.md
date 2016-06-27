@@ -26,8 +26,11 @@ Supported JS plugins
 * [jQuery](http://jquery.com)
 * [jQuery UI](http://jqueryui.com)
 * [AngularJS](https://angularjs.org)
+* [bxSlider](http://bxslider.com)
 * [DataTables](https://datatables.net)
+* [Isotope](http://isotope.metafizzy.co)
 * [Modernizr](https://modernizr.com)
+* [OWL Carousel](http://www.owlgraphic.com/owlcarousel)
 * [TinyMCE](https://www.tinymce.com)
 * [WOW](http://mynameismatthieu.com/WOW)
 
