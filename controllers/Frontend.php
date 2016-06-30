@@ -215,9 +215,6 @@ class Frontend extends Controller
                                             $name = trim(str_replace([
                                                 '{{ [',
                                                 '{{[',
-                                                'assets/js/',
-                                                'assets/javascript/',
-                                                'assets/vendor/',
                                                 '.custom',
                                                 '-custom',
                                                 '.min',
@@ -415,9 +412,9 @@ class Frontend extends Controller
             File::makeDirectory($folder, 0775, true);
         }
 
-        $elementents = scandir($folder);
+        $elements = scandir($folder);
 
-        foreach ($elementents as $element) {
+        foreach ($elements as $element) {
             if ($element != '.' && $element != '..') {
                 if (filetype($folder.'/'.$element) == 'dir') {
                     $value = $this->pluginFolderStat($folder.'/'.$element);
