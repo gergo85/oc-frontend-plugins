@@ -102,11 +102,11 @@ class Frontend extends Controller
 
                                         /* Plugin filename */
                                         $file = [
-                                            'animate.css',
+                                            'animate',
                                             'bootstrap.css',
                                             'bootstrap.min.css',
-                                            'font-awesome.css',
-                                            'normalize.css'
+                                            'font-awesome',
+                                            'normalize'
                                         ];
 
                                         /* Plugin name */
@@ -179,6 +179,12 @@ class Frontend extends Controller
                                         else if (substr_count($src, 'maxcdn.bootstrapcdn') == 1) {
                                             $data = $this->getPluginDetails('Bootstrap');
                                             $data['version'] = $url[2];
+                                        }
+
+                                        /* CKEditor */
+                                        else if (substr_count($src, 'cdn.ckeditor') == 1) {
+                                            $data = $this->getPluginDetails('CKEditor');
+                                            $data['version'] = $url[1];
                                         }
 
                                         /* TinyMCE */
@@ -295,6 +301,10 @@ class Frontend extends Controller
                 'name'    => 'Bootstrap',
                 'webpage' => 'http://getbootstrap.com/javascript'
             ],
+            'ckeditor' => [
+                'name'    => 'CKEditor',
+                'webpage' => 'http://ckeditor.com'
+            ],
             'tinymce' => [
                 'name'    => 'TinyMCE',
                 'webpage' => 'https://www.tinymce.com'
@@ -310,6 +320,10 @@ class Frontend extends Controller
             'jquery_ui' => [
                 'name'    => 'jQuery UI',
                 'webpage' => 'http://jqueryui.com'
+            ],
+            'jquery_migrate' => [
+                'name'    => 'jQuery Migrate',
+                'webpage' => 'https://github.com/jquery/jquery-migrate'
             ],
             'angularjs' => [
                 'name'    => 'AngularJS',
@@ -327,6 +341,10 @@ class Frontend extends Controller
                 'name'    => 'Modernizr',
                 'webpage' => 'https://modernizr.com'
             ],
+            'moment' => [
+                'name'    => 'Moment',
+                'webpage' => 'http://momentjs.com'
+            ],
             'owl_carousel' => [
                 'name'    => 'OWL Carousel',
                 'webpage' => 'http://www.owlgraphic.com/owlcarousel'
@@ -343,11 +361,17 @@ class Frontend extends Controller
         if ($code == 'jquery.ui' || $code == 'jqueryui') {
             $code = 'jquery_ui';
         }
+        else if ($code == 'migrate') {
+            $code = 'jquery_migrate';
+        }
         else if ($code == 'angular') {
             $code = 'angularjs';
         }
         else if ($code == 'bootstrap') {
             $code = 'bootstrap_js';
+        }
+        else if ($code == 'moment-with-locales') {
+            $code = 'moment';
         }
         else if ($code == 'owl.carousel' || $code == 'owl') {
             $code = 'owl_carousel';

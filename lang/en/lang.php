@@ -54,14 +54,17 @@ return [
         'font_awesome' => 'The iconic font and CSS toolkit.',
         'normalize' => 'A modern, HTML5-ready alternative to CSS resets.',
         'bootstrap_js' => 'The most popular JavaScript framework.',
+        'ckeditor' => 'Free and open source HTML text editor.',
         'tinymce' => 'Full featured web-based WYSIWYG editor.',
         'datatables' => 'Highly flexible tool for any HTML table.',
         'jquery' => 'A fast, small, and feature-rich library.',
         'jquery_ui' => 'Interactions and widgets for the web.',
+        'jquery_migrate' => 'Migrate older jQuery code.',
         'angularjs' => 'HTML enhanced for web apps!',
         'bxslider' => 'The responsive content slider.',
         'isotope' => 'Filter & sort magical layouts.',
         'modernizr' => 'Respond to your user’s browser features.',
+        'moment' => 'Parse, validate, manipulate, and display dates.',
         'owl_carousel' => 'Touch enabled responsive carousel slider.',
         'wow' => 'Reveals animations when you scroll.'
     ]
