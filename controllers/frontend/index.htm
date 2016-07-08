@@ -1,10 +1,8 @@
 <?php
 
 use Cms\Classes\Theme;
-use Backend\Models\UserPreferences;
 
 $theme = Theme::getEditTheme()->getDirName();
-$preferences = UserPreferences::forUser()->get('backend::backend.preferences');
 $themeFolder = 'themes/'.$theme.'/assets/';
 
 if (File::exists($themeFolder.'javascript')) {
