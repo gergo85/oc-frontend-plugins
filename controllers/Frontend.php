@@ -364,7 +364,7 @@ class Frontend extends Controller
         /* Formating the name */
         $code = strtolower($name);
 
-        if ($code == 'jquery.ui' || $code == 'jqueryui' || $code == 'ui') {
+        if ($code == 'jqueryui' || $code == 'ui') {
             $code = 'jquery_ui';
         }
         else if ($code == 'migrate') {
