@@ -64,10 +64,7 @@ class Frontend extends Controller
 
                                     /* Fonts */
                                     if (substr_count($href, 'fonts.googleapis') == 1) {
-                                        $href = substr($href, 8);
-                                        $border = strpos($href, 'family=') + 7;
-
-                                        $name = str_replace('+', ' ', substr($href, $border, strpos($href, ':') - $border));
+                                        $name = str_replace('+', ' ', substr($href, 34, strpos($href, ':') - 34));
 
                                         /* Check duplication */
                                         if (DB::table('indikator_frontend_plugins')->where('name', $name)->where('language', 4)->count() > 0) {
@@ -229,10 +226,7 @@ class Frontend extends Controller
                                                 '.min',
                                                 '.pack',
                                                 '.js',
-                                                '.jquery',
-                                                '-jquery',
                                                 'jquery.',
-                                                'jquery-',
                                                 'bootstrap.',
                                                 'bootstrap-',
                                                 ']|theme}}',
@@ -255,7 +249,7 @@ class Frontend extends Controller
                                             }
 
                                             /* Check duplication */
-                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0 || $data['name'] == 'Script' || $data['name'] == 'Scripts' || $data['name'] == 'Plugin' || $data['name'] == 'Plugins' || $data['name'] == 'Theme' || $data['name'] == 'Theme-functions' || $data['name'] == 'Theme-options' || $data['name'] == 'Custom' || $data['name'] == 'App' || $data['name'] == 'Main' || $data['name'] == 'Own') {
+                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0 || $data['name'] == 'Script' || $data['name'] == 'Plugins' || $data['name'] == 'Theme' || $data['name'] == 'Theme-functions' || $data['name'] == 'Custom' || $data['name'] == 'App' || $data['name'] == 'Main' || $data['name'] == 'Own') {
                                                 continue;
                                             }
 
@@ -364,7 +358,7 @@ class Frontend extends Controller
         /* Formating the name */
         $code = strtolower($name);
 
-        if ($code == 'jquery.ui' || $code == 'jqueryui' || $code == 'ui') {
+        if ($code == 'jquery.ui' || $code == 'jqueryui') {
             $code = 'jquery_ui';
         }
         else if ($code == 'migrate') {
