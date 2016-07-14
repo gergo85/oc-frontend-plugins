@@ -42,7 +42,7 @@ return [
     ],
     'flash' => [
         'search' => 'We found the %s new plugin(s).',
-        'delete' => 'Do you really want to delete this items?',
+        'delete' => 'Do you want to delete this items?',
         'remove' => 'Successfully removed those items.'
     ],
     'hint' => 'Please <b>rate this plugin</b> if it helped your work:',
