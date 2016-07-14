@@ -65,9 +65,16 @@ class Frontend extends Controller
                                     /* Fonts */
                                     if (substr_count($href, 'fonts.googleapis') == 1) {
                                         $href = substr($href, 8);
-                                        $border = strpos($href, 'family=') + 7;
+                                        $start = strpos($href, 'family=') + 7;
 
-                                        $name = str_replace('+', ' ', substr($href, $border, strpos($href, ':') - $border));
+                                        if (substr_count($href, ':') == 1) {
+                                            $end = strpos($href, ':') - $start;
+                                        }
+                                        else {
+                                            $end = strlen($href) - $start;
+                                        }
+
+                                        $name = str_replace('+', ' ', substr($href, $start, $end));
 
                                         /* Check duplication */
                                         if (DB::table('indikator_frontend_plugins')->where('name', $name)->where('language', 4)->count() > 0) {
@@ -75,7 +82,7 @@ class Frontend extends Controller
                                         }
 
                                         /* Add to database */
-                                        $this->insertToDatabase($name, 'https://www.google.com/fonts', '', 4, $theme, 'web_font');
+                                        $this->insertToDatabase($name, 'https://www.google.com/fonts', 'none', 4, $theme, 'web_font');
 
                                         /* Plugin couter */
                                         $count++;
@@ -100,8 +107,8 @@ class Frontend extends Controller
                                     }
 
                                     /* Popular */
-                                    else if (substr_count($href, '{{ [') == 1) {
-                                        $href = preg_replace('/\s+/', ' ', trim($href));
+                                    else if (substr_count($href, '{{ [') == 1 || substr_count($href, '{{[') == 1) {
+                                        $href = preg_replace('/\s+/', '', trim($href));
 
                                         /* Plugin filename */
                                         $file = [
@@ -122,7 +129,7 @@ class Frontend extends Controller
                                         ];
 
                                         /* Check availability */
-                                        foreach ($file as $key => $value) {
+                                        foreach ($file as $value) {
                                             if (substr_count($href, $value) > 0) {
                                                 /* Plugin details */
                                                 $data = $this->getPluginDetails($name[$key]);
@@ -133,7 +140,7 @@ class Frontend extends Controller
                                                 }
 
                                                 /* Add to database */
-                                                $this->insertToDatabase($data['name'], $data['webpage'], '', 3, $theme, $data['desc']);
+                                                $this->insertToDatabase($data['name'], $data['webpage'], 'none', 3, $theme, $data['desc']);
                                             }
                                         }
                                     }
@@ -220,23 +227,35 @@ class Frontend extends Controller
                                         $items = explode(',', str_replace("'", "", $src));
 
                                         foreach ($items as $js) {
-                                            /* Remove strings */
-                                            $name = trim(str_replace([
+                                            /* Get file path */
+                                            $js = trim(str_replace([
                                                 '{{ [',
                                                 '{{[',
+                                                ']|theme}}',
+                                                ']|theme }}',
+                                                ']| theme}}',
+                                                ']| theme }}',
+                                                '] |theme}}',
+                                                '] |theme }}',
+                                                '] | theme}}',
+                                                '] | theme }}'
+                                            ], '', $js));
+
+                                            /* Get file name */
+                                            $name = trim(str_replace([
                                                 '.custom',
                                                 '-custom',
                                                 '.min',
+                                                '-min',
                                                 '.pack',
+                                                '-pack',
                                                 '.js',
                                                 '.jquery',
                                                 '-jquery',
                                                 'jquery.',
                                                 'jquery-',
                                                 'bootstrap.',
-                                                'bootstrap-',
-                                                ']|theme}}',
-                                                ']|theme }}'
+                                                'bootstrap-'
                                             ], '', $js));
 
                                             /* Remove subfolders */
@@ -246,21 +265,18 @@ class Frontend extends Controller
                                             }
 
                                             /* Plugin details */
-                                            $data = $this->getPluginDetails($name);
+                                            $data = $this->getPluginDetails($name, 'themes/'.$theme.'/'.$js);
 
-                                            /* Unknown plugin */
-                                            if ($data['webpage'] == '') {
-                                                $data['name'] = ucfirst(str_replace(['.', '-'], ' ', $data['name']));
-                                                $data['desc'] = '';
-                                            }
+                                            /* Not allow file names */
+                                            $banned = ['Script', 'Scripts', 'Plugin', 'Plugins', 'Theme', 'Theme-functions', 'Theme-options', 'Custom', 'App', 'Main', 'Own'];
 
                                             /* Check duplication */
-                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0 || $data['name'] == 'Script' || $data['name'] == 'Scripts' || $data['name'] == 'Plugin' || $data['name'] == 'Plugins' || $data['name'] == 'Theme' || $data['name'] == 'Theme-functions' || $data['name'] == 'Theme-options' || $data['name'] == 'Custom' || $data['name'] == 'App' || $data['name'] == 'Main' || $data['name'] == 'Own') {
+                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0 || in_array($data['name'], $banned)) {
                                                 continue;
                                             }
 
                                             /* Add to database */
-                                            $this->insertToDatabase($data['name'], $data['webpage'], '', 1, $theme, $data['desc']);
+                                            $this->insertToDatabase($data['name'], $data['webpage'], $data['version'], 1, $theme, $data['desc']);
 
                                             /* Plugin couter */
                                             $count++;
@@ -283,7 +299,7 @@ class Frontend extends Controller
         return $this->listRefresh('manage');
     }
 
-    public function getPluginDetails($name = '')
+    public function getPluginDetails($name = '', $path = '')
     {
         /* Supported plugins */
         $plugin = [
@@ -383,11 +399,20 @@ class Frontend extends Controller
             $code = 'owl_carousel';
         }
 
+        /* Detect version */
+        if ($path == '') {
+            $version = 'none';
+        }
+        else {
+            $version = $this->getPluginVersion($path);
+        }
+
         /* Empty details */
         if (!isset($plugin[$code])) {
             return [
-                'name'    => $name,
+                'name'    => ucfirst(str_replace(['.', '-'], ' ', $name)),
                 'webpage' => '',
+                'version' => $version,
                 'desc'    => ''
             ];
         }
@@ -396,8 +421,31 @@ class Frontend extends Controller
         return [
             'name'    => $plugin[$code]['name'],
             'webpage' => $plugin[$code]['webpage'],
+            'version' => $version,
             'desc'    => $code
         ];
+    }
+
+    public function getPluginVersion($path = '')
+    {
+        $content = explode(' ', substr(File::get($path), 0, 500));
+        $parts = count($content);
+
+        for ($i = 0; $i < $parts; $i++) {
+            if (strlen($content[$i]) < 12 && strlen($content[$i]) > 2 && substr_count($content[$i], '.') > 0) {
+                if ($content[$i][0] == 'v') {
+                    $content[$i] = substr($content[$i], 1);
+                }
+
+                if (!is_numeric(substr($content[$i], 0, 1))) {
+                    continue;
+                }
+
+                return $content[$i];
+            }
+        }
+
+        return 'none';
     }
 
     public function insertToDatabase($name = '', $webpage = '', $version = '', $language = 1, $theme = '', $description = '')

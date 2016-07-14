@@ -16,3 +16,4 @@
 1.2.1: Added the description for plugins.
 1.2.2: Improved the plugin detection.
 1.2.3: Support more front-end plugins.
+1.2.4: Detect the version from files.
