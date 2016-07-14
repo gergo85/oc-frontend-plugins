@@ -216,7 +216,7 @@ class Frontend extends Controller
 
                                     /* Self hosted */
                                     else if (substr_count($src, '{{ [') == 1 || substr_count($src, '{{[') == 1) {
-                                        $src = preg_replace('/\s+/', ' ', trim($src));
+                                        $src = preg_replace('/\s+/', '', trim($src));
                                         $items = explode(',', str_replace("'", "", $src));
 
                                         foreach ($items as $js) {
