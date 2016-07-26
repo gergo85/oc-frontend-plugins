@@ -1,0 +1,7 @@
+<?php
+
+if ($record->version == '' || $record->version == 'none') {
+    $record->version = Lang::get('indikator.plugins::lang.form.none');
+}
+
+echo $record->version;

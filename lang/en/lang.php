@@ -11,6 +11,7 @@ return [
         'name' => 'Name',
         'webpage' => 'Webpage',
         'version' => 'Version',
+        'none' => 'none',
         'language' => 'Type',
         'font' => 'Font',
         'theme' => 'Theme',

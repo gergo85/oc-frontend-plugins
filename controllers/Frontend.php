@@ -29,6 +29,7 @@ class Frontend extends Controller
         SettingsManager::setContext('Indikator.Plugins', 'frontend');
     }
 
+    /* Magic feature */
     public function onSearchPlugins()
     {
         /* Settings */
@@ -210,7 +211,8 @@ class Frontend extends Controller
                                         }
 
                                         /* Check duplication */
-                                        if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->count() > 0) {
+                                        if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->count() > 0) {
+                                            $this->updateToDatabase(DB::table('indikator_frontend_plugins')->where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->pluck('id'), $data['version']);
                                             continue;
                                         }
 
@@ -271,7 +273,12 @@ class Frontend extends Controller
                                             $banned = ['Script', 'Scripts', 'Plugin', 'Plugins', 'Theme', 'Theme-functions', 'Theme-options', 'Custom', 'App', 'Main', 'Own'];
 
                                             /* Check duplication */
-                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0 || in_array($data['name'], $banned)) {
+                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0) {
+                                                $this->updateToDatabase(DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->pluck('id'), $data['version']);
+                                                continue;
+                                            }
+
+                                            else if (in_array($data['name'], $banned)) {
                                                 continue;
                                             }
 
@@ -299,6 +306,7 @@ class Frontend extends Controller
         return $this->listRefresh('manage');
     }
 
+    /* Get details */
     public function getPluginDetails($name = '', $path = '')
     {
         /* Supported plugins */
@@ -426,6 +434,7 @@ class Frontend extends Controller
         ];
     }
 
+    /* Get version */
     public function getPluginVersion($path = '')
     {
         $content = explode(' ', substr(File::get($path), 0, 500));
@@ -448,7 +457,8 @@ class Frontend extends Controller
         return 'none';
     }
 
-    public function insertToDatabase($name = '', $webpage = '', $version = '', $language = 1, $theme = '', $description = '')
+    /* Add plugin */
+    public function insertToDatabase($name = '', $webpage = '', $version = 'none', $language = 1, $theme = '', $description = '')
     {
         if ($description != '') {
             $description = Lang::get('indikator.plugins::lang.3rd_plugin.'.$description);
@@ -467,6 +477,17 @@ class Frontend extends Controller
         ]);
     }
 
+    /* Update version */
+    public function updateToDatabase($id = 0, $version = '1.0')
+    {
+        if (DB::table('indikator_frontend_plugins')->where('id', $id)->count() == 1) {
+            DB::table('indikator_frontend_plugins')->where('id', $id)->update([
+                'version' => $version
+            ]);
+        }
+    }
+
+    /* Remove plugins */
     public function onRemovePlugins()
     {
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
@@ -482,6 +503,7 @@ class Frontend extends Controller
         return $this->listRefresh('manage');
     }
 
+    /* Folder stat */
     public function pluginFolderStat($folder = 'themes')
     {
         $attr['size'] = $attr['files'] = $attr['folders'] = 0;
@@ -511,6 +533,7 @@ class Frontend extends Controller
         return $attr;
     }
 
+    /* File size */
     public function pluginFileSize($size = 0)
     {
         if ($size > 0) {

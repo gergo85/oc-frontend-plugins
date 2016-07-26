@@ -11,6 +11,7 @@ return [
         'name' => 'Név',
         'webpage' => 'Weboldal',
         'version' => 'Verzió',
+        'none' => 'nincs',
         'language' => 'Típus',
         'font' => 'Betűtípus',
         'theme' => 'Téma',

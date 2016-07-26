@@ -19,6 +19,8 @@ columns:
     version:
         label: indikator.plugins::lang.form.version
         searchable: true
+        type: partial
+        path: ~/plugins/indikator/plugins/models/frontend/_version.htm
 
     theme:
         label: indikator.plugins::lang.form.theme
