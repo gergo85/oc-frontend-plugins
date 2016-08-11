@@ -37,17 +37,17 @@ class Frontend extends Controller
         $count = 0;
 
         /* Themes */
-        if ($themes = opendir('themes')) {
+        if ($themes = opendir(base_path().'/themes')) {
             while (false !== ($theme = readdir($themes))) {
                 if ($theme != '.' && $theme != '..') {
 
                     /* Layouts */
-                    if ($layouts = opendir('themes/'.$theme.'/layouts')) {
+                    if ($layouts = opendir(base_path().'/themes/'.$theme.'/layouts')) {
                         while (false !== ($layout = readdir($layouts))) {
                             if ($layout != '.' && $layout != '..') {
 
                                 /* File */
-                                $html = File::get('themes/'.$theme.'/layouts/'.$layout);
+                                $html = File::get(base_path().'/themes/'.$theme.'/layouts/'.$layout);
                                 $html = substr($html, strpos($html, '==') + 2);
 
                                 /* Empty */
@@ -437,7 +437,7 @@ class Frontend extends Controller
     /* Get version */
     public function getPluginVersion($path = '')
     {
-        $content = explode(' ', substr(File::get($path), 0, 500));
+        $content = explode(' ', substr(File::get(base_path().'/'.$path), 0, 500));
         $parts = count($content);
 
         for ($i = 0; $i < $parts; $i++) {
@@ -508,11 +508,11 @@ class Frontend extends Controller
     {
         $attr['size'] = $attr['files'] = $attr['folders'] = 0;
 
-        if (!File::exists($folder)) {
-            File::makeDirectory($folder, 0775, true);
+        if (!File::exists(base_path().'/'.$folder)) {
+            File::makeDirectory(base_path().'/'.$folder, 0775, true);
         }
 
-        $elements = scandir($folder);
+        $elements = scandir(base_path().'/'.$folder);
 
         foreach ($elements as $element) {
             if ($element != '.' && $element != '..') {
@@ -524,7 +524,7 @@ class Frontend extends Controller
                 }
 
                 else {
-                    $attr['size'] += File::size($folder.'/'.$element);
+                    $attr['size'] += File::size(base_path().'/'.$folder.'/'.$element);
                     $attr['files']++;
                 }
             }
