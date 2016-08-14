@@ -62,11 +62,14 @@ return [
         'jquery_ui' => 'Interaktív felhasználói elemek gyűjteménye.',
         'jquery_migrate' => 'Kompatibilitás a régi jQuery kódokhoz.',
         'angularjs' => 'Webes alkalmazások továbbfejlesztése.',
+        'baguettebox' => 'Könnyen használható képnézegető popup.',
         'bxslider' => 'Reszponzív tartalom lapozó.',
         'isotope' => 'Elemek szűrése és rendezése.',
         'modernizr' => 'Böngészők működésének modernizálása.',
         'moment' => 'Dátumok ellenőrzése és manipulálása.',
         'owl_carousel' => 'Mobil-barát, reszponzív kép váltó.',
+        'tooltipster' => 'Testreszabható modern gyorstippek.',
+        'waypoints' => 'Események hozzárendelése az oldal elemeihez.',
         'wow' => 'Animációk megjelenítése görgetéskor.'
     ]
 ];

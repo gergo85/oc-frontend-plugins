@@ -62,11 +62,14 @@ return [
         'jquery_ui' => 'Interactions and widgets for the web.',
         'jquery_migrate' => 'Migrate older jQuery code.',
         'angularjs' => 'HTML enhanced for web apps!',
+        'baguettebox' => 'Simple and easy to use lightbox.',
         'bxslider' => 'The responsive content slider.',
         'isotope' => 'Filter & sort magical layouts.',
         'modernizr' => 'Respond to your user’s browser features.',
         'moment' => 'Parse, validate, manipulate, and display dates.',
         'owl_carousel' => 'Touch enabled responsive carousel slider.',
+        'tooltipster' => 'A flexible and extensible tooltips.',
+        'waypoints' => 'Easily execute a function when you scroll to an element.',
         'wow' => 'Reveals animations when you scroll.'
     ]
 ];

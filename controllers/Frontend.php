@@ -130,7 +130,7 @@ class Frontend extends Controller
                                         ];
 
                                         /* Check availability */
-                                        foreach ($file as $value) {
+                                        foreach ($file as $key => $value) {
                                             if (substr_count($href, $value) > 0) {
                                                 /* Plugin details */
                                                 $data = $this->getPluginDetails($name[$key]);
@@ -251,6 +251,10 @@ class Frontend extends Controller
                                                 '-min',
                                                 '.pack',
                                                 '-pack',
+                                                '.core',
+                                                '-core',
+                                                '.bundle',
+                                                '-bundle',
                                                 '.js',
                                                 '.jquery',
                                                 '-jquery',
@@ -359,6 +363,10 @@ class Frontend extends Controller
                 'name'    => 'AngularJS',
                 'webpage' => 'https://angularjs.org'
             ],
+            'baguettebox' => [
+                'name'    => 'baguetteBox',
+                'webpage' => 'https://feimosi.github.io/baguetteBox.js'
+            ],
             'bxslider' => [
                 'name'    => 'bxSlider',
                 'webpage' => 'http://bxslider.com'
@@ -378,6 +386,14 @@ class Frontend extends Controller
             'owl_carousel' => [
                 'name'    => 'OWL Carousel',
                 'webpage' => 'http://www.owlgraphic.com/owlcarousel'
+            ],
+            'tooltipster' => [
+                'name'    => 'Tooltipster',
+                'webpage' => 'http://iamceege.github.io/tooltipster'
+            ],
+            'waypoints' => [
+                'name'    => 'Waypoints',
+                'webpage' => 'http://imakewebthings.com/waypoints'
             ],
             'wow' => [
                 'name'    => 'WOW',
@@ -437,6 +453,10 @@ class Frontend extends Controller
     /* Get version */
     public function getPluginVersion($path = '')
     {
+        if (!File::exists(base_path().'/'.$path)) {
+            return 'none';
+        }
+
         $content = explode(' ', substr(File::get(base_path().'/'.$path), 0, 500));
         $parts = count($content);
 

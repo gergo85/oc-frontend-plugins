@@ -27,6 +27,7 @@ Supported JS plugins
 * [jQuery UI](http://jqueryui.com)
 * [jQuery Migrate](https://github.com/jquery/jquery-migrate)
 * [AngularJS](https://angularjs.org)
+* [baguetteBox](https://feimosi.github.io/baguetteBox.js)
 * [bxSlider](http://bxslider.com)
 * [CKEditor](http://ckeditor.com)
 * [DataTables](https://datatables.net)
@@ -35,6 +36,8 @@ Supported JS plugins
 * [Moment](http://momentjs.com)
 * [OWL Carousel](http://www.owlgraphic.com/owlcarousel)
 * [TinyMCE](https://www.tinymce.com)
+* [Tooltipster](http://iamceege.github.io/tooltipster)
+* [Waypoints](http://imakewebthings.com/waypoints)
 * [WOW](http://mynameismatthieu.com/WOW)
 
 Supported other plugins
