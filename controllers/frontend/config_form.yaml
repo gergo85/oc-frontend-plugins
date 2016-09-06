@@ -9,9 +9,9 @@ modelClass: Indikator\Plugins\Models\Frontend
 defaultRedirect: indikator/plugins/frontend
 
 create:
-    redirect: indikator/plugins/frontend
+    redirect: indikator/plugins/frontend/update/:id
     redirectClose: indikator/plugins/frontend
 
 update:
-    redirect: indikator/plugins/frontend
+    redirect: indikator/plugins/frontend/update/:id
     redirectClose: indikator/plugins/frontend
