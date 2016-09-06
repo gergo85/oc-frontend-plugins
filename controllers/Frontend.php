@@ -3,8 +3,8 @@
 use Backend\Classes\Controller;
 use BackendMenu;
 use System\Classes\SettingsManager;
+use Indikator\Plugins\Models\Frontend as FrontendPlugins;
 use File;
-use DB;
 use Flash;
 use Lang;
 use App;
@@ -78,7 +78,7 @@ class Frontend extends Controller
                                         $name = str_replace('+', ' ', substr($href, $start, $end));
 
                                         /* Check duplication */
-                                        if (DB::table('indikator_frontend_plugins')->where('name', $name)->where('language', 4)->count() > 0) {
+                                        if (FrontendPlugins::where('name', $name)->where('language', 4)->count() > 0) {
                                             continue;
                                         }
 
@@ -92,7 +92,7 @@ class Frontend extends Controller
                                     /* Bootstrap */
                                     else if (substr_count($href, 'maxcdn.bootstrapcdn') == 1) {
                                         /* Check duplication */
-                                        if (DB::table('indikator_frontend_plugins')->where('name', 'Bootstrap')->where('language', 3)->count() > 0) {
+                                        if (FrontendPlugins::where('name', 'Bootstrap')->where('language', 3)->count() > 0) {
                                             continue;
                                         }
 
@@ -136,7 +136,7 @@ class Frontend extends Controller
                                                 $data = $this->getPluginDetails($name[$key]);
 
                                                 /* Check duplication */
-                                                if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->count() > 0) {
+                                                if (FrontendPlugins::where('name', $data['name'])->count() > 0) {
                                                     continue;
                                                 }
 
@@ -211,8 +211,8 @@ class Frontend extends Controller
                                         }
 
                                         /* Check duplication */
-                                        if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->count() > 0) {
-                                            $this->updateToDatabase(DB::table('indikator_frontend_plugins')->where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->pluck('id'), $data['version']);
+                                        if (FrontendPlugins::where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->count() > 0) {
+                                            $this->updateToDatabase(FrontendPlugins::where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->pluck('id'), $data['version']);
                                             continue;
                                         }
 
@@ -277,8 +277,8 @@ class Frontend extends Controller
                                             $banned = ['Script', 'Scripts', 'Plugin', 'Plugins', 'Theme', 'Theme-functions', 'Theme-options', 'Custom', 'App', 'Main', 'Own'];
 
                                             /* Check duplication */
-                                            if (DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->count() > 0) {
-                                                $this->updateToDatabase(DB::table('indikator_frontend_plugins')->where('name', $data['name'])->where('language', 1)->pluck('id'), $data['version']);
+                                            if (FrontendPlugins::where('name', $data['name'])->where('language', 1)->count() > 0) {
+                                                $this->updateToDatabase(FrontendPlugins::where('name', $data['name'])->where('language', 1)->pluck('id'), $data['version']);
                                                 continue;
                                             }
 
@@ -484,7 +484,7 @@ class Frontend extends Controller
             $description = Lang::get('indikator.plugins::lang.3rd_plugin.'.$description);
         }
 
-        DB::table('indikator_frontend_plugins')->insertGetId([
+        FrontendPlugins::insertGetId([
             'name'        => $name,
             'webpage'     => $webpage,
             'version'     => $version,
@@ -500,8 +500,8 @@ class Frontend extends Controller
     /* Update version */
     public function updateToDatabase($id = 0, $version = '1.0')
     {
-        if (DB::table('indikator_frontend_plugins')->where('id', $id)->count() == 1) {
-            DB::table('indikator_frontend_plugins')->where('id', $id)->update([
+        if (FrontendPlugins::where('id', $id)->count() == 1) {
+            FrontendPlugins::where('id', $id)->update([
                 'version' => $version
             ]);
         }
@@ -512,8 +512,8 @@ class Frontend extends Controller
     {
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $objectId) {
-                if (DB::table('indikator_frontend_plugins')->where('id', $objectId)->count() == 1) {
-                    DB::table('indikator_frontend_plugins')->where('id', $objectId)->delete();
+                if (FrontendPlugins::where('id', $objectId)->count() == 1) {
+                    FrontendPlugins::where('id', $objectId)->delete();
                 }
             }
 
