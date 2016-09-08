@@ -500,8 +500,8 @@ class Frontend extends Controller
     /* Update version */
     public function updateToDatabase($id = 0, $version = '1.0')
     {
-        if (FrontendPlugins::where('id', $id)->count() == 1) {
-            FrontendPlugins::where('id', $id)->update([
+        if (!$item = FrontendPlugins::find($id)) {
+            $item->update([
                 'version' => $version
             ]);
         }
@@ -511,16 +511,18 @@ class Frontend extends Controller
     public function onRemovePlugins()
     {
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
-            foreach ($checkedIds as $objectId) {
-                if (FrontendPlugins::where('id', $objectId)->count() == 1) {
-                    FrontendPlugins::where('id', $objectId)->delete();
+            foreach ($checkedIds as $itemId) {
+                if (!$item = FrontendPlugins::find($itemId)) {
+                    continue;
                 }
+
+                $item->delete();
             }
 
             Flash::success(Lang::get('indikator.plugins::lang.flash.remove'));
         }
 
-        return $this->listRefresh('manage');
+        return $this->listRefresh();
     }
 
     /* Folder stat */
