@@ -10,6 +10,7 @@
         data-stripe-load-indicator>
         <?= e(trans('indikator.plugins::lang.button.search')) ?>
     </button>
+    <?php if (DB::table('indikator_frontend_plugins')->count() > 0): ?>
     <button
         class="btn btn-default oc-icon-trash-o"
         disabled="disabled"
@@ -24,4 +25,5 @@
         data-stripe-load-indicator>
         <?= e(trans('system::lang.plugins.remove')) ?>
     </button>
+    <?php endif ?>
 </div>
