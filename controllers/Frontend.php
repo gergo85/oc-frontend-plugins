@@ -525,7 +525,7 @@ class Frontend extends Controller
             Flash::success(Lang::get('indikator.plugins::lang.flash.remove'));
         }
 
-        return $this->listRefresh();
+        return Redirect::refresh();
     }
 
     /* Folder stat */
