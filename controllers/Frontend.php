@@ -8,6 +8,7 @@ use File;
 use Flash;
 use Lang;
 use App;
+use Redirect;
 
 class Frontend extends Controller
 {
@@ -307,7 +308,9 @@ class Frontend extends Controller
 
         Flash::success(str_replace('%s', $count, Lang::get('indikator.plugins::lang.flash.search')));
 
-        return $this->listRefresh('manage');
+        if ($count > 0) {
+            return Redirect::refresh();
+        }
     }
 
     /* Get details */
