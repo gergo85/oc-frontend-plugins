@@ -283,6 +283,7 @@ class Frontend extends Controller
                                                 continue;
                                             }
 
+                                            /* Not allow file name */
                                             else if (in_array($data['name'], $banned)) {
                                                 continue;
                                             }
@@ -583,8 +584,6 @@ class Frontend extends Controller
             return $size.' '.$name[$i];
         }
 
-        $size = '0 '.'B';
-
-        return $size;
+        return '0 B';
     }
 }
