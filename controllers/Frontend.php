@@ -275,7 +275,7 @@ class Frontend extends Controller
                                             $data = $this->getPluginDetails($name, 'themes/'.$theme.'/'.$js);
 
                                             /* Not allow file names */
-                                            $banned = ['Script', 'Scripts', 'Plugin', 'Plugins', 'Theme', 'Theme-functions', 'Theme-options', 'Custom', 'App', 'Main', 'Own'];
+                                            $banned = ['@framework', '@framework extras', 'Script', 'Scripts', 'Plugin', 'Plugins', 'Theme', 'Theme-functions', 'Theme-options', 'Custom', 'App', 'Main', 'Own'];
 
                                             /* Check duplication */
                                             if (FrontendPlugins::where('name', $data['name'])->where('language', 1)->count() > 0) {
@@ -408,7 +408,10 @@ class Frontend extends Controller
         /* Formating the name */
         $code = strtolower($name);
 
-        if ($code == 'jqueryui' || $code == 'ui') {
+        if ($code == '@jquery') {
+            $code = 'jquery';
+        }
+        else if ($code == 'jqueryui' || $code == 'ui') {
             $code = 'jquery_ui';
         }
         else if ($code == 'migrate') {
@@ -430,6 +433,9 @@ class Frontend extends Controller
         /* Detect version */
         if ($path == '') {
             $version = 'none';
+        }
+        else if ($name == '@jquery') {
+            $version = '2.1.3';
         }
         else {
             $version = $this->getPluginVersion($path);
