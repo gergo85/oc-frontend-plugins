@@ -22,3 +22,4 @@
     - update_timestamp_nullable.php
 1.2.6: Support more front-end plugins.
 1.2.7: Minor improvements.
+1.2.8: Support build-in combiner aliases.
