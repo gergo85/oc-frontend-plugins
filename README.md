@@ -1,12 +1,12 @@
-##Frontend plugins
+# Frontend plugins
 List of components which are use in front-end. So you won't forget the name and version of usage plugins, and it is easier update them too.
 
-###Main features
+## Main features
 * __Automatic plugin detection__
 * Grouping and filtering plugins
 * Detailed statistics and graph
 
-###Plugin detection
+## Plugin detection
 Supported CDNs
 * [Google CDN](https://developers.google.com/speed/libraries)
 * [Microsoft CDN](https://www.asp.net)
@@ -43,16 +43,16 @@ Supported JS plugins
 Supported other plugins
 * The plugin can finding and listing other JavaScript plugins too without version number and description.
 
-###Available languages
+## Available languages
 * en - English
 * hu - Magyar
 
-###Installation
+## Installation
 1. Go to the __Settings > Updates & Plugins__ page in the Backend.
 1. Click on the __Install plugins__ button.
 1. Type the __Frontend Plugins__ text in the search field.
 
-###Add widget
+## Add widget
 1. Go to the __Dashboard__ page in the Backend.
 1. Click on the __Manage widgets > Add widget__ button.
 1. Select the __Frontend Plugins widget__ from the list.
