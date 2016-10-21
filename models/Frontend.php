@@ -2,7 +2,7 @@
 
 use Model;
 
-class frontend extends Model
+class Frontend extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
