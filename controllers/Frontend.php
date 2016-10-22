@@ -30,7 +30,7 @@ class Frontend extends Controller
         SettingsManager::setContext('Indikator.Plugins', 'frontend');
     }
 
-    /* Magic feature */
+    /* Search plugins */
     public function onSearchPlugins()
     {
         /* Settings */
@@ -45,7 +45,7 @@ class Frontend extends Controller
                     /* Layouts */
                     if ($layouts = opendir(base_path().'/themes/'.$theme.'/layouts')) {
                         while (false !== ($layout = readdir($layouts))) {
-                            if ($layout != '.' && $layout != '..') {
+                            if ($layout != '.' && $layout != '..' && filetype(base_path().'/themes/'.$theme.'/layouts/'.$layout) != 'dir') {
 
                                 /* File */
                                 $html = File::get(base_path().'/themes/'.$theme.'/layouts/'.$layout);
@@ -548,7 +548,7 @@ class Frontend extends Controller
 
         foreach ($elements as $element) {
             if ($element != '.' && $element != '..') {
-                if (filetype($folder.'/'.$element) == 'dir') {
+                if (filetype(base_path().'/'.$folder.'/'.$element) == 'dir') {
                     $value = $this->pluginFolderStat($folder.'/'.$element);
                     $attr['size']    += $value['size'];
                     $attr['files']   += $value['files'];
