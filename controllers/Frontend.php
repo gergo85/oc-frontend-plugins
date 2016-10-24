@@ -522,7 +522,7 @@ class Frontend extends Controller
     {
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
             foreach ($checkedIds as $itemId) {
-                if (!$item = FrontendPlugins::find($itemId)) {
+                if (!$item = FrontendPlugins::whereId($itemId)) {
                     continue;
                 }
 
