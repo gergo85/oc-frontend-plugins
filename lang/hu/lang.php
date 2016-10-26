@@ -23,6 +23,7 @@ return [
     'button' => [
         'new' => 'Új kiegészítő',
         'search' => 'Keresés',
+        'settings' => 'Testreszabás',
         'return' => 'Vissza'
     ],
     'stat' => [
@@ -32,6 +33,13 @@ return [
         'pieces' => 'darab',
         'files' => 'fájlok',
         'img' => 'KÉP'
+    ],
+    'settings' => [
+        'show_total' => 'Összegzés mutatása',
+        'show_sizes' => 'Méretek mutatása',
+        'show_files' => 'Fájlok mutatása',
+        'show_folders' => 'Mappák mutatása',
+        'show_fonts' => 'Betűtípusok mutatása'
     ],
     'widget' => [
         'show_total' => 'Összes mutatása',

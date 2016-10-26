@@ -42,8 +42,13 @@ $pieces = [
     'total'   => DB::table('indikator_frontend_plugins')->count(),
     'files'   => $stat['js']['files'] + $stat['css']['files'] + $stat['img']['files'],
     'folders' => $stat['js']['folders'] + $stat['css']['folders'] + $stat['img']['folders'],
-    'font'    => DB::table('indikator_frontend_plugins')->where('language', 4)->count()
+    'font'    => Indikator\Plugins\Models\Frontend::where('language', 4)->count()
 ];
+
+$preferenceModel = class_exists('Backend\Models\UserPreference')
+    ? Backend\Models\UserPreference::forUser()
+    : Backend\Models\UserPreferences::forUser();
+$preferences = $preferenceModel->get('backend::backend.preferences');
 
 ?>
 <div class="scoreboard">
@@ -51,6 +56,7 @@ $pieces = [
         <?= $this->makeHintPartial('indikator_plugins_hint', 'hint') ?>
     </div>
     <div data-control="toolbar">
+        <?php if (!isset($preferences['fp_show_total']) || $preferences['fp_show_total']): ?>
         <div class="scoreboard-item title-value">
             <h4><?= e(trans('indikator.plugins::lang.stat.total')) ?></h4>
             <p><?= $pieces['total'] ?></p>
@@ -58,12 +64,14 @@ $pieces = [
         </div>
         <div class="scoreboard-item control-chart" data-control="chart-pie">
             <ul>
-                <li data-color="#e27f7f">JS <span><?= DB::table('indikator_frontend_plugins')->where('language', '1')->count() ?></span></li>
-                <li data-color="#8892bf">PHP <span><?= DB::table('indikator_frontend_plugins')->where('language', '2')->count() ?></span></li>
-                <li data-color="#e2e17f">CSS <span><?= DB::table('indikator_frontend_plugins')->where('language', '3')->count() ?></span></li>
+                <li data-color="#e27f7f">JS <span><?= Indikator\Plugins\Models\Frontend::where('language', '1')->count() ?></span></li>
+                <li data-color="#8892bf">PHP <span><?= Indikator\Plugins\Models\Frontend::where('language', '2')->count() ?></span></li>
+                <li data-color="#e2e17f">CSS <span><?= Indikator\Plugins\Models\Frontend::where('language', '3')->count() ?></span></li>
             </ul>
         </div>
+        <?php endif; ?>
 
+        <?php if (!isset($preferences['fp_show_sizes']) || $preferences['fp_show_sizes']): ?>
         <div class="scoreboard-item title-value">
             <h4>JS <?= e(trans('indikator.plugins::lang.stat.size')) ?></h4>
             <p><?= $size['js'][0] ?></p>
@@ -79,6 +87,9 @@ $pieces = [
             <p><?= $size['img'][0] ?></p>
             <p class="description"><?= $size['img'][1] ?></p>
         </div>
+        <?php endif; ?>
+
+        <?php if (!isset($preferences['fp_show_files']) || $preferences['fp_show_files']): ?>
         <div class="scoreboard-item title-value">
             <h4><?= e(trans('indikator.plugins::lang.stat.files')) ?></h4>
             <p><?= $pieces['files'] ?></p>
@@ -91,6 +102,9 @@ $pieces = [
                 <li data-color="#96be58"><?= e(trans('indikator.plugins::lang.stat.img')) ?> <span><?= $stat['img']['files'] ?></span></li>
             </ul>
         </div>
+        <?php endif; ?>
+
+        <?php if (!isset($preferences['fp_show_folders']) || $preferences['fp_show_folders']): ?>
         <div class="scoreboard-item title-value">
             <h4><?= e(trans('indikator.plugins::lang.stat.folders')) ?></h4>
             <p><?= $pieces['folders'] ?></p>
@@ -103,11 +117,15 @@ $pieces = [
                 <li data-color="#96be58"><?= e(trans('indikator.plugins::lang.stat.img')) ?> <span><?= $stat['img']['folders'] ?></span></li>
             </ul>
         </div>
+        <?php endif; ?>
+
+        <?php if (!isset($preferences['fp_show_fonts']) || $preferences['fp_show_fonts']): ?>
         <div class="scoreboard-item title-value">
             <h4><?= e(trans('indikator.plugins::lang.form.font')) ?></h4>
             <p><?= $pieces['font'] ?></p>
             <p class="description"><?= e(trans_choice('indikator.plugins::lang.stat.pieces', $pieces['font'])) ?></p>
         </div>
+        <?php endif; ?>
     </div>
 </div>
 

@@ -3,6 +3,7 @@
 use System\Classes\PluginBase;
 use System\Classes\SettingsManager;
 use Backend;
+use Event;
 
 class Plugin extends PluginBase
 {
@@ -24,9 +25,9 @@ class Plugin extends PluginBase
                 'label'       => 'indikator.plugins::lang.plugin.name',
                 'description' => 'indikator.plugins::lang.plugin.description',
                 'icon'        => 'icon-cubes',
-                'permissions' => ['indikator.plugins.all'],
                 'url'         => Backend::url('indikator/plugins/frontend'),
-                'category'    => SettingsManager::CATEGORY_CMS
+                'category'    => SettingsManager::CATEGORY_CMS,
+                'permissions' => ['indikator.plugins']
             ]
         ];
     }
@@ -44,10 +45,52 @@ class Plugin extends PluginBase
     public function registerPermissions()
     {
         return [
-            'indikator.plugins.all' => [
+            'indikator.plugins' => [
                 'tab'   => 'system::lang.permissions.name',
                 'label' => 'indikator.plugins::lang.permission'
             ]
         ];
+    }
+
+    public function boot()
+    {
+        Event::listen('backend.form.extendFields', function($form)
+        {
+            if ($form->model instanceof Backend\Models\Preference) {
+
+                $form->addTabFields([
+                    'fp_show_total' => [
+                        'tab'     => 'indikator.plugins::lang.plugin.name',
+                        'label'   => 'indikator.plugins::lang.settings.show_total',
+                        'type'    => 'switch',
+                        'default' => true
+                    ],
+                    'fp_show_sizes' => [
+                        'tab'     => 'indikator.plugins::lang.plugin.name',
+                        'label'   => 'indikator.plugins::lang.settings.show_sizes',
+                        'type'    => 'switch',
+                        'default' => true
+                    ],
+                    'fp_show_files' => [
+                        'tab'     => 'indikator.plugins::lang.plugin.name',
+                        'label'   => 'indikator.plugins::lang.settings.show_files',
+                        'type'    => 'switch',
+                        'default' => true
+                    ],
+                    'fp_show_folders' => [
+                        'tab'     => 'indikator.plugins::lang.plugin.name',
+                        'label'   => 'indikator.plugins::lang.settings.show_folders',
+                        'type'    => 'switch',
+                        'default' => true
+                    ],
+                    'fp_show_fonts' => [
+                        'tab'     => 'indikator.plugins::lang.plugin.name',
+                        'label'   => 'indikator.plugins::lang.settings.show_fonts',
+                        'type'    => 'switch',
+                        'default' => true
+                    ]
+                ]);
+            }
+        });
     }
 }

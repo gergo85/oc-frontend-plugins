@@ -23,6 +23,7 @@ return [
     'button' => [
         'new' => 'New plugin',
         'search' => 'Search plugins',
+        'settings' => 'Settings',
         'return' => 'Return'
     ],
     'stat' => [
@@ -32,6 +33,13 @@ return [
         'pieces' => 'piece|pieces',
         'files' => 'files',
         'img' => 'IMG'
+    ],
+    'settings' => [
+        'show_total' => 'Show Total',
+        'show_sizes' => 'Show Sizes',
+        'show_files' => 'Show Files',
+        'show_folders' => 'Show Folders',
+        'show_fonts' => 'Show Fonts'
     ],
     'widget' => [
         'show_total' => 'Show total',
