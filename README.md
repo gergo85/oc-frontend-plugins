@@ -2,9 +2,10 @@
 List of components which are use in front-end. So you won't forget the name and version of usage plugins, and it is easier update them too.
 
 ## Main features
-* __Automatic plugin detection__
-* Grouping and filtering plugins
+* __Automatic plugin detection!__
 * Detailed statistics and graph
+* Grouping and filtering plugins
+* Customized statistics view
 
 ## Plugin detection
 Supported CDNs
