@@ -2,7 +2,6 @@
 
 use Backend\Classes\ReportWidgetBase;
 use Exception;
-use DB;
 
 class Plugins extends ReportWidgetBase
 {
@@ -58,10 +57,10 @@ class Plugins extends ReportWidgetBase
 
     protected function loadData()
     {
-        $this->vars['js']    = DB::table('indikator_frontend_plugins')->where('language', '1')->count();
-        $this->vars['php']   = DB::table('indikator_frontend_plugins')->where('language', '2')->count();
-        $this->vars['css']   = DB::table('indikator_frontend_plugins')->where('language', '3')->count();
-        $this->vars['font']  = DB::table('indikator_frontend_plugins')->where('language', '4')->count();
+        $this->vars['js']    = \Indikator\Plugins\Models\Frontend::where('language', '1')->count();
+        $this->vars['php']   = \Indikator\Plugins\Models\Frontend::where('language', '2')->count();
+        $this->vars['css']   = \Indikator\Plugins\Models\Frontend::where('language', '3')->count();
+        $this->vars['font']  = \Indikator\Plugins\Models\Frontend::where('language', '4')->count();
         $this->vars['total'] = $this->vars['js'] + $this->vars['php'] + $this->vars['css'] + $this->vars['font'];
     }
 }
