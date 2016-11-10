@@ -75,7 +75,7 @@ return [
         'isotope' => 'Elemek szűrése és rendezése.',
         'modernizr' => 'Böngészők működésének modernizálása.',
         'moment' => 'Dátumok ellenőrzése és manipulálása.',
-        'owl_carousel' => 'Mobil-barát, reszponzív kép váltó.',
+        'owl_carousel' => 'Mobil-barát, reszponzív képváltó.',
         'tooltipster' => 'Testreszabható modern gyorstippek.',
         'waypoints' => 'Események hozzárendelése az oldal elemeihez.',
         'wow' => 'Animációk megjelenítése görgetéskor.'
