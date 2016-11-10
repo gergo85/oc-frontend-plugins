@@ -69,13 +69,18 @@ class Frontend extends Controller
                                         $href = substr($href, 8);
                                         $start = strpos($href, 'family=') + 7;
 
+                                        /* Calculate the end position */
                                         if (substr_count($href, ':') == 1) {
                                             $end = strpos($href, ':') - $start;
+                                        }
+                                        else if (substr_count($href, '&') == 1) {
+                                            $end = strpos($href, '&') - $start;
                                         }
                                         else {
                                             $end = strlen($href) - $start;
                                         }
 
+                                        /* Remove the "plus" sign */
                                         $name = str_replace('+', ' ', substr($href, $start, $end));
 
                                         /* Check duplication */
@@ -92,6 +97,7 @@ class Frontend extends Controller
 
                                     /* Bootstrap */
                                     else if (substr_count($href, 'maxcdn.bootstrapcdn') == 1) {
+
                                         /* Check duplication */
                                         if (FrontendPlugins::where('name', 'Bootstrap')->where('language', 3)->count() > 0) {
                                             continue;
@@ -133,6 +139,7 @@ class Frontend extends Controller
                                         /* Check availability */
                                         foreach ($file as $key => $value) {
                                             if (substr_count($href, $value) > 0) {
+
                                                 /* Plugin details */
                                                 $data = $this->getPluginDetails($name[$key]);
 
@@ -256,6 +263,8 @@ class Frontend extends Controller
                                                 '-core',
                                                 '.bundle',
                                                 '-bundle',
+                                                '.pkgd',
+                                                '-pkgd',
                                                 '.js',
                                                 '.jquery',
                                                 '-jquery',
@@ -307,8 +316,10 @@ class Frontend extends Controller
             closedir($themes);
         }
 
+        /* Flash message */
         Flash::success(str_replace('%s', $count, Lang::get('indikator.plugins::lang.flash.search')));
 
+        /* Refresh the page */
         if ($count > 0) {
             return Redirect::refresh();
         }
@@ -408,6 +419,7 @@ class Frontend extends Controller
         /* Formating the name */
         $code = strtolower($name);
 
+        /* Modify the special names  */
         if ($code == '@jquery') {
             $code = 'jquery';
         }
@@ -430,13 +442,24 @@ class Frontend extends Controller
             $code = 'owl_carousel';
         }
 
-        /* Detect version */
+        /* There is no version */
         if ($path == '') {
             $version = 'none';
         }
+
+        /* jQuery build-in combiner */
         else if ($name == '@jquery') {
             $version = '2.1.3';
         }
+
+        /* Get version from name */
+        else if (is_numeric(substr($code, -3, 1)) && is_numeric(substr($code, -1, 1))) {
+            $array = explode('-', $code);
+            $name = str_replace($array[count($array) - 1], '', $name);
+            $version = $array[count($array) - 1];
+        }
+
+        /* Get version from file */
         else {
             $version = $this->getPluginVersion($path);
         }
@@ -444,7 +467,7 @@ class Frontend extends Controller
         /* Empty details */
         if (!isset($plugin[$code])) {
             return [
-                'name'    => ucfirst(str_replace(['.', '-'], ' ', $name)),
+                'name'    => ucfirst(str_replace(['.', '-', '_'], ' ', $name)),
                 'webpage' => '',
                 'version' => $version,
                 'desc'    => ''
@@ -480,7 +503,7 @@ class Frontend extends Controller
                     continue;
                 }
 
-                return $content[$i];
+                return str_replace(['.', ',', ';', '+', '-', '*'], '', $content[$i]);
             }
         }
 
