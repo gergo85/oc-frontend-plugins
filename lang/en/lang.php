@@ -10,6 +10,7 @@ return [
     'form' => [
         'name' => 'Name',
         'webpage' => 'Webpage',
+        'open' => 'Open',
         'version' => 'Version',
         'none' => 'none',
         'language' => 'Type',

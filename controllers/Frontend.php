@@ -503,7 +503,7 @@ class Frontend extends Controller
                     continue;
                 }
 
-                return str_replace([',', ';', '+', '-', '*'], '', $content[$i]);
+                return str_replace([',', ';', '+', '*', '-', '/'], '', $content[$i]);
             }
         }
 

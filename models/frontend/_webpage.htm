@@ -1,0 +1,8 @@
+<?php
+
+if ($record->webpage == '') {
+    echo Lang::get('indikator.plugins::lang.form.none');
+}
+else {
+    echo '<a href="'.$record->webpage.'" target="_blank">'.Lang::get('indikator.plugins::lang.form.open').'</a>';
+}

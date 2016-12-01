@@ -13,14 +13,19 @@ columns:
     name:
         label: indikator.plugins::lang.form.name
         searchable: true
-        type: partial
-        path: ~/plugins/indikator/plugins/models/frontend/_name.htm
 
     version:
         label: indikator.plugins::lang.form.version
         searchable: true
         type: partial
         path: ~/plugins/indikator/plugins/models/frontend/_version.htm
+
+    webpage:
+        label: indikator.plugins::lang.form.webpage
+        invisible: true
+        clickable: false
+        type: partial
+        path: ~/plugins/indikator/plugins/models/frontend/_webpage.htm
 
     theme:
         label: indikator.plugins::lang.form.theme
@@ -41,11 +46,9 @@ columns:
         searchable: true
         invisible: true
         type: datetime
-        format: Y-m-d G:i
 
     updated_at:
         label: indikator.plugins::lang.form.updated
         searchable: true
         invisible: true
         type: datetime
-        format: Y-m-d G:i

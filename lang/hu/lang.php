@@ -10,6 +10,7 @@ return [
     'form' => [
         'name' => 'Név',
         'webpage' => 'Weboldal',
+        'open' => 'Megnyitás',
         'version' => 'Verzió',
         'none' => 'nincs',
         'language' => 'Típus',
