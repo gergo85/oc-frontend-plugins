@@ -8,6 +8,7 @@ return [
         'title' => 'plugin'
     ],
     'form' => [
+        'id' => 'ID',
         'name' => 'Name',
         'webpage' => 'Webpage',
         'open' => 'Open',

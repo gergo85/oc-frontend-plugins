@@ -4,6 +4,10 @@
 
 columns:
 
+    id:
+        label: indikator.plugins::lang.form.id
+        invisible: true
+
     language:
         label: indikator.plugins::lang.form.language
         searchable: true

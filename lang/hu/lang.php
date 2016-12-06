@@ -8,6 +8,7 @@ return [
         'title' => 'bővítmény'
     ],
     'form' => [
+        'id' => 'ID',
         'name' => 'Név',
         'webpage' => 'Weboldal',
         'open' => 'Megnyitás',
