@@ -1,44 +1,43 @@
 <div class="report-widget">
-    <h3 style="margin-bottom:5px;"><?= e(trans($this->property('title'))) ?></h3>
+    <h3><?= e(trans($this->property('title'))) ?></h3>
 
-<?php if (!isset($error)): ?>
-    <?php if ($this->property('total')): ?>
-    <div class="scoreboard-item title-value pull-left" style="margin:20px 20px 0 0;">
-        <h4><?= e(trans('indikator.plugins::lang.widget.total')) ?></h4>
-        <p class="text-center"><?= $total ?></p>
+    <?php if (!isset($error)): ?>
+    <div class="control-status-list">
+        <ul>
+            <?php if ($this->property('total')): ?>
+            <li>
+                <span class="status-text"><?= e(trans('indikator.plugins::lang.widget.total')) ?></span>
+                <span class="status-label primary"><?= $total ?></span>
+            </li>
+            <?php endif ?>
+            <?php if ($this->property('js')): ?>
+            <li>
+                <span class="status-text">JS</span>
+                <span class="status-label primary"><?= $js ?></span>
+            </li>
+            <?php endif ?>
+            <?php if ($this->property('php')): ?>
+            <li>
+                <span class="status-text">PHP</span>
+                <span class="status-label primary"><?= $php ?></span>
+            </li>
+            <?php endif ?>
+            <?php if ($this->property('php')): ?>
+            <li>
+                <span class="status-text">CSS</span>
+                <span class="status-label primary"><?= $css ?></span>
+            </li>
+            <?php endif ?>
+            <?php if ($this->property('font')): ?>
+            <li>
+                <span class="status-text"><?= e(trans('indikator.plugins::lang.form.font')) ?></span>
+                <span class="status-label primary"><?= $font ?></span>
+            </li>
+            <?php endif ?>
+        </ul>
     </div>
-    <?php endif ?>
 
-    <?php if ($this->property('js')): ?>
-    <div class="scoreboard-item title-value pull-left" style="margin:20px 20px 0 0;">
-        <h4>JS</h4>
-        <p class="text-center"><?= $js ?></p>
-    </div>
-    <?php endif ?>
-
-    <?php if ($this->property('php')): ?>
-    <div class="scoreboard-item title-value pull-left" style="margin:20px 20px 0 0;">
-        <h4>PHP</h4>
-        <p class="text-center"><?= $php ?></p>
-    </div>
-    <?php endif ?>
-
-    <?php if ($this->property('php')): ?>
-    <div class="scoreboard-item title-value pull-left" style="margin:20px 20px 0 0;">
-        <h4>CSS</h4>
-        <p class="text-center"><?= $css ?></p>
-    </div>
-    <?php endif ?>
-
-    <?php if ($this->property('font')): ?>
-    <div class="scoreboard-item title-value pull-left" style="margin:20px 0 0 0;">
-        <h4><?= e(trans('indikator.plugins::lang.form.font')) ?></h4>
-        <p class="text-center"><?= $font ?></p>
-    </div>
-    <?php endif ?>
-
-    <div style="clear:both;"></div>
-<?php else: ?>
+    <?php else: ?>
     <p class="flash-message static warning"><?= e($error) ?></p>
-<?php endif ?>
+    <?php endif ?>
 </div>
