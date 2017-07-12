@@ -33,6 +33,12 @@ class Frontend extends Controller
     /* Search plugins */
     public function onSearchPlugins()
     {
+        /* Error */
+        if (!method_exists('DOMDocument', '__construct')) {
+            Flash::error(Lang::get('indikator.plugins::lang.flash.error'));
+            return;
+        }
+
         /* Settings */
         libxml_use_internal_errors(true);
         $count = 0;
@@ -159,7 +165,7 @@ class Frontend extends Controller
                                 foreach ($dom->getElementsByTagName('script') as $item) {
                                     $src = $item->getAttribute('src');
 
-                                    /* CDN */
+                                    /* External URL */
                                     if (substr_count($src, '//') == 1) {
                                         $url = explode('/', substr($src, strpos($src, '//') + 2));
                                         $data['webpage'] = $data['desc'] = '';
@@ -168,6 +174,12 @@ class Frontend extends Controller
                                         if (substr_count($src, 'code.jquery') == 1) {
                                             $data = $this->getPluginDetails('jQuery');
                                             $data['version'] = str_replace(['.min', '.js'], '', substr($url[1], 7));
+                                        }
+
+                                        /* jQuery */
+                                        else if (substr_count($src, 'unpkg.com/jquery') == 1) {
+                                            $data = $this->getPluginDetails('jQuery');
+                                            $data['version'] = '';
                                         }
 
                                         /* Google */
@@ -216,6 +228,30 @@ class Frontend extends Controller
                                         else if (substr_count($src, 'cdn.datatables') == 1) {
                                             $data = $this->getPluginDetails('DataTables');
                                             $data['version'] = $url[1];
+                                        }
+
+                                        /* AngularJS */
+                                        else if (substr_count($src, 'unpkg.com/angular') == 1) {
+                                            $data = $this->getPluginDetails('AngularJS');
+                                            $data['version'] = '';
+                                        }
+
+                                        /* React */
+                                        else if (substr_count($src, 'unpkg.com/react') == 1) {
+                                            $data = $this->getPluginDetails('React');
+                                            $data['version'] = '';
+                                        }
+
+                                        /* Vue.js */
+                                        else if (substr_count($src, 'unpkg.com/vue') == 1) {
+                                            $data = $this->getPluginDetails('VueJS');
+                                            $data['version'] = '';
+                                        }
+
+                                        /* Masonry */
+                                        else if (substr_count($src, 'unpkg.com/masonry') == 1) {
+                                            $data = $this->getPluginDetails('Masonry');
+                                            $data['version'] = '';
                                         }
 
                                         /* Check duplication */
@@ -378,6 +414,14 @@ class Frontend extends Controller
                 'name'    => 'AngularJS',
                 'webpage' => 'https://angularjs.org'
             ],
+            'react' => [
+                'name'    => 'React',
+                'webpage' => 'https://facebook.github.io/react'
+            ],
+            'vuejs' => [
+                'name'    => 'Vue.js',
+                'webpage' => 'https://vuejs.org'
+            ],
             'baguettebox' => [
                 'name'    => 'baguetteBox',
                 'webpage' => 'https://feimosi.github.io/baguetteBox.js'
@@ -389,6 +433,10 @@ class Frontend extends Controller
             'isotope' => [
                 'name'    => 'Isotope',
                 'webpage' => 'http://isotope.metafizzy.co'
+            ],
+            'masonry' => [
+                'name'    => 'Masonry',
+                'webpage' => 'https://masonry.desandro.com'
             ],
             'modernizr' => [
                 'name'    => 'Modernizr',

@@ -52,6 +52,7 @@ return [
         'total' => 'Total'
     ],
     'flash' => [
+        'error' => 'Not installed the DOMDocument PHP class.',
         'search' => 'We found the %s new plugin(s).',
         'delete' => 'Do you want to delete this items?',
         'remove' => 'Successfully removed those items.'
@@ -71,10 +72,13 @@ return [
         'jquery' => 'A fast, small, and feature-rich library.',
         'jquery_ui' => 'Interactions and widgets for the web.',
         'jquery_migrate' => 'Migrate older jQuery code.',
-        'angularjs' => 'HTML enhanced for web apps!',
+        'angularjs' => 'Front-end web application framework.',
+        'react' => 'JavaScript library for building user interfaces.',
+        'vuejs' => 'JavaScript framework for building user interfaces.',
         'baguettebox' => 'Simple and easy to use lightbox.',
         'bxslider' => 'The responsive content slider.',
         'isotope' => 'Filter & sort magical layouts.',
+        'masonry' => 'This is a JavaScript grid layout library.',
         'modernizr' => 'Respond to your user’s browser features.',
         'moment' => 'Parse, validate, manipulate, and display dates.',
         'owl_carousel' => 'Touch enabled responsive carousel slider.',
