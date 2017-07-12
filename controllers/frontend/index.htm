@@ -1,24 +1,29 @@
 <?php
 
+/* Theme class */
 use Cms\Classes\Theme;
 
+/* Base variables */
 $theme = Theme::getEditTheme()->getDirName();
 $themeFolder = 'themes/'.$theme.'/assets/';
 
-if (File::exists($themeFolder.'javascript')) {
-    $assets['js'] = 'javascript';
-}
-else {
+/* JS folder */
+if (File::exists($themeFolder.'js')) {
     $assets['js'] = 'js';
 }
-
-if (File::exists($themeFolder.'stylesheets')) {
-    $assets['css'] = 'stylesheets';
-}
 else {
+    $assets['js'] = 'javascript';
+}
+
+/* CSS folder */
+if (File::exists($themeFolder.'css')) {
     $assets['css'] = 'css';
 }
+else {
+    $assets['css'] = 'stylesheets';
+}
 
+/* IMG folder */
 if (File::exists($themeFolder.'images')) {
     $assets['img'] = 'images';
 }
@@ -26,18 +31,21 @@ else {
     $assets['img'] = 'img';
 }
 
+/* Stats */
 $stat = [
     'js'  => $this->pluginFolderStat($themeFolder.$assets['js']),
     'css' => $this->pluginFolderStat($themeFolder.$assets['css']),
     'img' => $this->pluginFolderStat($themeFolder.$assets['img'])
 ];
 
+/* Sizes */
 $size = [
     'js'  => explode(' ', $this->pluginFileSize($stat['js']['size'])),
     'css' => explode(' ', $this->pluginFileSize($stat['css']['size'])),
     'img' => explode(' ', $this->pluginFileSize($stat['img']['size']))
 ];
 
+/* Pieces */
 $pieces = [
     'total'   => DB::table('indikator_frontend_plugins')->count(),
     'files'   => $stat['js']['files'] + $stat['css']['files'] + $stat['img']['files'],
@@ -45,6 +53,7 @@ $pieces = [
     'font'    => Indikator\Plugins\Models\Frontend::where('language', 4)->count()
 ];
 
+/* Preferences */
 $preferenceModel = class_exists('Backend\Models\UserPreference')
     ? Backend\Models\UserPreference::forUser()
     : Backend\Models\UserPreferences::forUser();
