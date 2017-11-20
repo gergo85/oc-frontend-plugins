@@ -26,6 +26,8 @@ return [
         'new' => 'Új kiegészítő',
         'search' => 'Keresés',
         'settings' => 'Testreszabás',
+        'previous' => 'Előző',
+        'next' => 'Következő',
         'return' => 'Vissza'
     ],
     'stat' => [

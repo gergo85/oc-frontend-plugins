@@ -1,3 +1,12 @@
+<?php
+
+$uri = explode('/', Request::path());
+
+$previous = \Indikator\Plugins\Models\Frontend::where('id', '<', $uri[5])->max('id');
+$next     = \Indikator\Plugins\Models\Frontend::where('id', '>', $uri[5])->min('id');
+
+?>
+
 <?php Block::put('breadcrumb') ?>
     <ul>
         <li><a href="<?= Backend::url('indikator/plugins/frontend') ?>"><?= e(trans('indikator.plugins::lang.plugin.name')) ?></a></li>
@@ -39,6 +48,22 @@
                 <span class="btn-text">
                     <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('indikator/plugins/frontend') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                 </span>
+                <?php if ($next): ?>
+                <a
+                    href="<?= $next; ?>"
+                    class="oc-icon-angle-right btn-icon pull-right"
+                    style="font-size: 24px; text-decoration:none"
+                    title="<?= e(trans('indikator.content::lang.button.next')) ?>">
+                </a>
+                <?php endif ?>
+                <?php if ($previous): ?>
+                <a
+                    href="<?= $previous; ?>"
+                    class="oc-icon-angle-left btn-icon pull-right"
+                    style="font-size: 24px; text-decoration:none"
+                    title="<?= e(trans('indikator.content::lang.button.previous')) ?>">
+                </a>
+                <?php endif ?>
                 <button
                     class="oc-icon-trash-o btn-icon danger pull-right"
                     data-request="onDelete"

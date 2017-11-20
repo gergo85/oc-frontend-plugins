@@ -26,6 +26,8 @@ return [
         'new' => 'New plugin',
         'search' => 'Search plugins',
         'settings' => 'Settings',
+        'previous' => 'Previous',
+        'next' => 'Next',
         'return' => 'Return'
     ],
     'stat' => [
