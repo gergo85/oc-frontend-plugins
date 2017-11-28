@@ -13,8 +13,8 @@ use Redirect;
 class Frontend extends Controller
 {
     public $implement = [
-        'Backend.Behaviors.FormController',
-        'Backend.Behaviors.ListController'
+        \Backend\Behaviors\FormController::class,
+        \Backend\Behaviors\ListController::class
     ];
 
     public $formConfig = 'config_form.yaml';
