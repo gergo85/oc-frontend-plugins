@@ -48,7 +48,8 @@ class Plugin extends PluginBase
         return [
             'indikator.plugins' => [
                 'tab'   => 'system::lang.permissions.name',
-                'label' => 'indikator.plugins::lang.permission'
+                'label' => 'indikator.plugins::lang.permission',
+                'roles' => ['developer']
             ]
         ];
     }
