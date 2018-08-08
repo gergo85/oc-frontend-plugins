@@ -29,29 +29,29 @@ class Plugins extends ReportWidgetBase
                 'validationMessage' => 'backend::lang.dashboard.widget_title_error'
             ],
             'total' => [
-                'title'             => 'indikator.plugins::lang.widget.show_total',
-                'default'           => true,
-                'type'              => 'checkbox'
+                'title'   => 'indikator.plugins::lang.widget.show_total',
+                'default' => true,
+                'type'    => 'checkbox'
             ],
             'js' => [
-                'title'             => 'indikator.plugins::lang.widget.show_js',
-                'default'           => true,
-                'type'              => 'checkbox'
+                'title'   => 'indikator.plugins::lang.widget.show_js',
+                'default' => true,
+                'type'    => 'checkbox'
             ],
             'php' => [
-                'title'             => 'indikator.plugins::lang.widget.show_php',
-                'default'           => true,
-                'type'              => 'checkbox'
+                'title'   => 'indikator.plugins::lang.widget.show_php',
+                'default' => true,
+                'type'    => 'checkbox'
             ],
             'css' => [
-                'title'             => 'indikator.plugins::lang.widget.show_css',
-                'default'           => true,
-                'type'              => 'checkbox'
+                'title'   => 'indikator.plugins::lang.widget.show_css',
+                'default' => true,
+                'type'    => 'checkbox'
             ],
             'font' => [
-                'title'             => 'indikator.plugins::lang.widget.show_font',
-                'default'           => true,
-                'type'              => 'checkbox'
+                'title'   => 'indikator.plugins::lang.widget.show_font',
+                'default' => true,
+                'type'    => 'checkbox'
             ]
         ];
     }
