@@ -42,7 +42,7 @@ secondaryTabs:
             type: radio
             options:
                 1: JavaScript
-                2: PHP
                 3: CSS
+                2: PHP
                 4: indikator.plugins::lang.form.font
             default: 1
