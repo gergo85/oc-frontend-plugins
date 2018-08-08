@@ -1,65 +1,3 @@
-<?php
-
-/* Theme class */
-use Cms\Classes\Theme;
-
-/* Base variables */
-$theme = Theme::getEditTheme()->getDirName();
-$themeFolder = 'themes/'.$theme.'/assets/';
-
-/* JS folder */
-if (File::exists($themeFolder.'js')) {
-    $assets['js'] = 'js';
-}
-else {
-    $assets['js'] = 'javascript';
-}
-
-/* CSS folder */
-if (File::exists($themeFolder.'css')) {
-    $assets['css'] = 'css';
-}
-else {
-    $assets['css'] = 'stylesheets';
-}
-
-/* IMG folder */
-if (File::exists($themeFolder.'images')) {
-    $assets['img'] = 'images';
-}
-else {
-    $assets['img'] = 'img';
-}
-
-/* Stats */
-$stat = [
-    'js'  => $this->pluginFolderStat($themeFolder.$assets['js']),
-    'css' => $this->pluginFolderStat($themeFolder.$assets['css']),
-    'img' => $this->pluginFolderStat($themeFolder.$assets['img'])
-];
-
-/* Sizes */
-$size = [
-    'js'  => explode(' ', $this->pluginFileSize($stat['js']['size'])),
-    'css' => explode(' ', $this->pluginFileSize($stat['css']['size'])),
-    'img' => explode(' ', $this->pluginFileSize($stat['img']['size']))
-];
-
-/* Pieces */
-$pieces = [
-    'total'   => DB::table('indikator_frontend_plugins')->count(),
-    'files'   => $stat['js']['files'] + $stat['css']['files'] + $stat['img']['files'],
-    'folders' => $stat['js']['folders'] + $stat['css']['folders'] + $stat['img']['folders'],
-    'font'    => Indikator\Plugins\Models\Frontend::where('language', 4)->count()
-];
-
-/* Preferences */
-$preferenceModel = class_exists('Backend\Models\UserPreference')
-    ? Backend\Models\UserPreference::forUser()
-    : Backend\Models\UserPreferences::forUser();
-$preferences = $preferenceModel->get('backend::backend.preferences');
-
-?>
 <div class="scoreboard">
     <div class="container-flush">
         <?= $this->makeHintPartial('indikator_plugins_hint', 'hint') ?>
@@ -73,9 +11,9 @@ $preferences = $preferenceModel->get('backend::backend.preferences');
         </div>
         <div class="scoreboard-item control-chart" data-control="chart-pie">
             <ul>
-                <li data-color="#e27f7f">JS <span><?= Indikator\Plugins\Models\Frontend::where('language', '1')->count() ?></span></li>
-                <li data-color="#8892bf">PHP <span><?= Indikator\Plugins\Models\Frontend::where('language', '2')->count() ?></span></li>
-                <li data-color="#e2e17f">CSS <span><?= Indikator\Plugins\Models\Frontend::where('language', '3')->count() ?></span></li>
+                <li data-color="#e27f7f">JS <span><?= $count['js'] ?></span></li>
+                <li data-color="#e2e17f">CSS <span><?= $count['css'] ?></span></li>
+                <li data-color="#8892bf">PHP <span><?= $count['php'] ?></span></li>
             </ul>
         </div>
         <?php endif; ?>

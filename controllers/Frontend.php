@@ -1,7 +1,9 @@
 <?php namespace Indikator\Plugins\Controllers;
 
 use Backend\Classes\Controller;
+use Backend\Models\UserPreference;
 use BackendMenu;
+use Cms\Classes\Theme;
 use System\Classes\SettingsManager;
 use Indikator\Plugins\Models\Frontend as FrontendPlugins;
 use File;
@@ -28,54 +30,113 @@ class Frontend extends Controller
 
         BackendMenu::setContext('October.System', 'system', 'settings');
         SettingsManager::setContext('Indikator.Plugins', 'frontend');
+
+        $stat = $this->getStat();
+
+        $this->vars['themeFolder'] = $stat['themeFolder'];
+        $this->vars['assets']      = $stat['assets'];
+        $this->vars['stat']        = $stat['stat'];
+        $this->vars['size']        = $stat['size'];
+        $this->vars['count']       = $stat['count'];
+        $this->vars['pieces']      = $stat['pieces'];
+        $this->vars['preferences'] = $stat['preferences'];
     }
 
-    /* Search plugins */
+    // Get stat
+    public function getStat()
+    {
+        // Base variables
+        $theme = Theme::getEditTheme()->getDirName();
+        $result['themeFolder'] = 'themes/'.$theme.'/assets/';
+
+        // Assets folder
+        $result['assets']['js']  = File::exists($result['themeFolder'].'js') ? 'js' : 'javascript';
+        $result['assets']['css'] = File::exists($result['themeFolder'].'css') ? 'css' : 'stylesheets';
+        $result['assets']['img'] = File::exists($result['themeFolder'].'images') ? 'images' : 'img';
+
+        // Stats
+        $result['stat'] = [
+            'js'  => $this->pluginFolderStat($result['themeFolder'].$result['assets']['js']),
+            'css' => $this->pluginFolderStat($result['themeFolder'].$result['assets']['css']),
+            'img' => $this->pluginFolderStat($result['themeFolder'].$result['assets']['img'])
+        ];
+
+        // Sizes
+        $result['size'] = [
+            'js'  => explode(' ', $this->pluginFileSize($result['stat']['js']['size'])),
+            'css' => explode(' ', $this->pluginFileSize($result['stat']['css']['size'])),
+            'img' => explode(' ', $this->pluginFileSize($result['stat']['img']['size']))
+        ];
+
+        // Assets
+        $result['count'] = [
+            'js'  => FrontendPlugins::where('language', '1')->count(),
+            'css' => FrontendPlugins::where('language', '2')->count(),
+            'php' => FrontendPlugins::where('language', '3')->count()
+        ];
+
+        // Pieces
+        $result['pieces'] = [
+            'total'   => FrontendPlugins::count(),
+            'files'   => $result['stat']['js']['files'] + $result['stat']['css']['files'] + $result['stat']['img']['files'],
+            'folders' => $result['stat']['js']['folders'] + $result['stat']['css']['folders'] + $result['stat']['img']['folders'],
+            'font'    => FrontendPlugins::where('language', 4)->count()
+        ];
+
+        // Preferences
+        $preferenceModel = UserPreference::forUser();
+        $result['preferences'] = $preferenceModel->get('backend::backend.preferences');
+
+        // Finish
+        return $result;
+    }
+
+    // Search plugins
     public function onSearchPlugins()
     {
-        /* Error */
+        // Error
         if (!method_exists('DOMDocument', '__construct')) {
             Flash::error(Lang::get('indikator.plugins::lang.flash.error'));
             return;
         }
 
-        /* Settings */
+        // Settings
         libxml_use_internal_errors(true);
         $count = 0;
 
-        /* Themes */
+        // Themes
         if ($themes = opendir(base_path().'/themes')) {
             while (false !== ($theme = readdir($themes))) {
                 if ($theme != '.' && $theme != '..') {
 
-                    /* Layouts */
+                    // Layouts
                     if ($layouts = opendir(base_path().'/themes/'.$theme.'/layouts')) {
                         while (false !== ($layout = readdir($layouts))) {
                             if ($layout != '.' && $layout != '..' && filetype(base_path().'/themes/'.$theme.'/layouts/'.$layout) != 'dir') {
 
-                                /* File */
+                                // File
                                 $html = File::get(base_path().'/themes/'.$theme.'/layouts/'.$layout);
                                 $html = substr($html, strpos($html, '==') + 2);
 
-                                /* Empty */
+                                // Empty
                                 if ($html == '') {
                                     continue;
                                 }
 
-                                /* Content */
+                                // Content
                                 $dom = new \DOMDocument;
                                 $dom->loadHTML($html);
 
-                                /* Stylesheet */
+                                // Stylesheet
                                 foreach ($dom->getElementsByTagName('link') as $item) {
                                     $href = $item->getAttribute('href');
 
-                                    /* Fonts */
+                                    // Fonts
                                     if (substr_count($href, 'fonts.googleapis') == 1) {
                                         $href = substr($href, 8);
                                         $start = strpos($href, 'family=') + 7;
 
-                                        /* Calculate the end position */
+                                        // Calculate the end position
                                         if (substr_count($href, ':') == 1) {
                                             $end = strpos($href, ':') - $start;
                                         }
@@ -86,45 +147,45 @@ class Frontend extends Controller
                                             $end = strlen($href) - $start;
                                         }
 
-                                        /* Remove the "plus" sign */
+                                        // Remove the "plus" sign
                                         $name = str_replace('+', ' ', substr($href, $start, $end));
 
-                                        /* Check duplication */
+                                        // Check duplication
                                         if (FrontendPlugins::where('name', $name)->where('language', 4)->count() > 0) {
                                             continue;
                                         }
 
-                                        /* Add to database */
+                                        // Add to database
                                         $this->insertToDatabase($name, 'https://www.google.com/fonts', 'none', 4, $theme, 'web_font');
 
-                                        /* Plugin couter */
+                                        // Plugin couter
                                         $count++;
                                     }
 
-                                    /* Bootstrap */
+                                    // Bootstrap
                                     else if (substr_count($href, 'maxcdn.bootstrapcdn') == 1) {
 
-                                        /* Check duplication */
+                                        // Check duplication
                                         if (FrontendPlugins::where('name', 'Bootstrap')->where('language', 3)->count() > 0) {
                                             continue;
                                         }
 
-                                        /* Plugin details */
+                                        // Plugin details
                                         $url = explode('/', substr($href, strpos($href, '//') + 2));
                                         $data = $this->getPluginDetails('Bootstrap_CSS');
 
-                                        /* Add to database */
+                                        // Add to database
                                         $this->insertToDatabase($data['name'], $data['webpage'], $url[2], 3, $theme, $data['desc']);
 
-                                        /* Plugin couter */
+                                        // Plugin couter
                                         $count++;
                                     }
 
-                                    /* Popular */
+                                    // Popular
                                     else if (substr_count($href, '{{ [') == 1 || substr_count($href, '{{[') == 1) {
                                         $href = preg_replace('/\s+/', '', trim($href));
 
-                                        /* Plugin filename */
+                                        // Plugin filename
                                         $file = [
                                             'animate',
                                             'bootstrap.css',
@@ -133,7 +194,7 @@ class Frontend extends Controller
                                             'normalize'
                                         ];
 
-                                        /* Plugin name */
+                                        // Plugin name
                                         $name = [
                                             'Animate',
                                             'Bootstrap_CSS',
@@ -142,138 +203,138 @@ class Frontend extends Controller
                                             'Normalize'
                                         ];
 
-                                        /* Check availability */
+                                        // Check availability
                                         foreach ($file as $key => $value) {
                                             if (substr_count($href, $value) > 0) {
 
-                                                /* Plugin details */
+                                                // Plugin details
                                                 $data = $this->getPluginDetails($name[$key]);
 
-                                                /* Check duplication */
+                                                // Check duplication
                                                 if (FrontendPlugins::where('name', $data['name'])->count() > 0) {
                                                     continue;
                                                 }
 
-                                                /* Add to database */
+                                                // Add to database
                                                 $this->insertToDatabase($data['name'], $data['webpage'], 'none', 3, $theme, $data['desc']);
                                             }
                                         }
                                     }
                                 }
 
-                                /* JavaScript */
+                                // JavaScript
                                 foreach ($dom->getElementsByTagName('script') as $item) {
                                     $src = $item->getAttribute('src');
 
-                                    /* External URL */
+                                    // External URL
                                     if (substr_count($src, '//') == 1) {
                                         $url = explode('/', substr($src, strpos($src, '//') + 2));
                                         $data['webpage'] = $data['desc'] = '';
 
-                                        /* jQuery */
+                                        // jQuery
                                         if (substr_count($src, 'code.jquery') == 1) {
                                             $data = $this->getPluginDetails('jQuery');
                                             $data['version'] = str_replace(['.min', '.js'], '', substr($url[1], 7));
                                         }
 
-                                        /* jQuery */
+                                        // jQuery
                                         else if (substr_count($src, 'unpkg.com/jquery') == 1) {
                                             $data = $this->getPluginDetails('jQuery');
                                             $data['version'] = '';
                                         }
 
-                                        /* Google */
+                                        // Google
                                         else if (substr_count($src, 'ajax.aspnetcdn') == 1) {
                                             $data = $this->getPluginDetails(ucfirst($url[2]));
                                             $data['version'] = substr($url[3], 7, 5);
                                         }
 
-                                        /* Microsoft */
+                                        // Microsoft
                                         else if (substr_count($src, 'ajax.googleapis') == 1) {
                                             $data = $this->getPluginDetails(ucfirst($url[3]));
                                             $data['version'] = $url[4];
                                         }
 
-                                        /* CDNJS */
+                                        // CDNJS
                                         else if (substr_count($src, 'cdnjs.cloudflare') == 1) {
                                             $data = $this->getPluginDetails(ucfirst($url[3]));
                                             $data['version'] = $url[4];
                                         }
 
-                                        /* jsDelivr */
+                                        // jsDelivr
                                         else if (substr_count($src, 'cdn.jsdelivr') == 1) {
                                             $data = $this->getPluginDetails(ucfirst($url[1]));
                                             $data['version'] = $url[2];
                                         }
 
-                                        /* Bootstrap */
+                                        // Bootstrap
                                         else if (substr_count($src, 'maxcdn.bootstrapcdn') == 1) {
                                             $data = $this->getPluginDetails('Bootstrap');
                                             $data['version'] = $url[2];
                                         }
 
-                                        /* CKEditor */
+                                        // CKEditor
                                         else if (substr_count($src, 'cdn.ckeditor') == 1) {
                                             $data = $this->getPluginDetails('CKEditor');
                                             $data['version'] = $url[1];
                                         }
 
-                                        /* TinyMCE */
+                                        // TinyMCE
                                         else if (substr_count($src, 'cdn.tinymce') == 1) {
                                             $data = $this->getPluginDetails('TinyMCE');
                                             $data['version'] = $url[1];
                                         }
 
-                                        /* DataTables */
+                                        // DataTables
                                         else if (substr_count($src, 'cdn.datatables') == 1) {
                                             $data = $this->getPluginDetails('DataTables');
                                             $data['version'] = $url[1];
                                         }
 
-                                        /* AngularJS */
+                                        // AngularJS
                                         else if (substr_count($src, 'unpkg.com/angular') == 1) {
                                             $data = $this->getPluginDetails('AngularJS');
                                             $data['version'] = '';
                                         }
 
-                                        /* React */
+                                        // React
                                         else if (substr_count($src, 'unpkg.com/react') == 1) {
                                             $data = $this->getPluginDetails('React');
                                             $data['version'] = '';
                                         }
 
-                                        /* Vue.js */
+                                        // Vue.js
                                         else if (substr_count($src, 'unpkg.com/vue') == 1) {
                                             $data = $this->getPluginDetails('VueJS');
                                             $data['version'] = '';
                                         }
 
-                                        /* Masonry */
+                                        // Masonry
                                         else if (substr_count($src, 'unpkg.com/masonry') == 1) {
                                             $data = $this->getPluginDetails('Masonry');
                                             $data['version'] = '';
                                         }
 
-                                        /* Check duplication */
+                                        // Check duplication
                                         if (FrontendPlugins::where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->count() > 0) {
                                             $this->updateToDatabase(FrontendPlugins::where('name', $data['name'])->whereOr('name', lcfirst($data['name']))->where('language', 1)->pluck('id'), $data['version']);
                                             continue;
                                         }
 
-                                        /* Add to database */
+                                        // Add to database
                                         $this->insertToDatabase($data['name'], $data['webpage'], $data['version'], 1, $theme, $data['desc']);
 
-                                        /* Plugin couter */
+                                        // Plugin couter
                                         $count++;
                                     }
 
-                                    /* Self hosted */
+                                    // Self hosted
                                     else if (substr_count($src, '{{ [') == 1 || substr_count($src, '{{[') == 1) {
                                         $src = preg_replace('/\s+/', '', trim($src));
                                         $items = explode(',', str_replace("'", "", $src));
 
                                         foreach ($items as $js) {
-                                            /* Get file path */
+                                            // Get file path
                                             $js = trim(str_replace([
                                                 '{{ [',
                                                 '{{[',
@@ -287,7 +348,7 @@ class Frontend extends Controller
                                                 '] | theme }}'
                                             ], '', $js));
 
-                                            /* Get file name */
+                                            // Get file name
                                             $name = trim(str_replace([
                                                 '.custom',
                                                 '-custom',
@@ -310,33 +371,33 @@ class Frontend extends Controller
                                                 'bootstrap-'
                                             ], '', $js));
 
-                                            /* Remove subfolders */
+                                            // Remove subfolders
                                             if (substr_count($name, '/') > 0) {
                                                 $path = explode('/', $name);
                                                 $name = $path[count($path) - 1];
                                             }
 
-                                            /* Plugin details */
+                                            // Plugin details
                                             $data = $this->getPluginDetails($name, 'themes/'.$theme.'/'.$js);
 
-                                            /* Not allow file names */
+                                            // Not allow file names
                                             $banned = ['@framework', '@framework extras', 'Script', 'Scripts', 'Plugin', 'Plugins', 'Theme', 'Theme-functions', 'Theme-options', 'Custom', 'App', 'Main', 'Own'];
 
-                                            /* Check duplication */
+                                            // Check duplication
                                             if (FrontendPlugins::where('name', $data['name'])->where('language', 1)->count() > 0) {
                                                 $this->updateToDatabase(FrontendPlugins::where('name', $data['name'])->where('language', 1)->pluck('id'), $data['version']);
                                                 continue;
                                             }
 
-                                            /* Not allow file name */
+                                            // Not allow file name
                                             else if (in_array($data['name'], $banned)) {
                                                 continue;
                                             }
 
-                                            /* Add to database */
+                                            // Add to database
                                             $this->insertToDatabase($data['name'], $data['webpage'], $data['version'], 1, $theme, $data['desc']);
 
-                                            /* Plugin couter */
+                                            // Plugin couter
                                             $count++;
                                         }
                                     }
@@ -352,19 +413,19 @@ class Frontend extends Controller
             closedir($themes);
         }
 
-        /* Flash message */
+        // Flash message
         Flash::success(str_replace('%s', $count, Lang::get('indikator.plugins::lang.flash.search')));
 
-        /* Refresh the page */
+        // Refresh the page
         if ($count > 0) {
             return Redirect::refresh();
         }
     }
 
-    /* Get details */
+    // Get details
     public function getPluginDetails($name = '', $path = '')
     {
-        /* Supported plugins */
+        // Supported plugins
         $plugin = [
             'bootstrap_css' => [
                 'name'    => 'Bootstrap',
@@ -464,10 +525,10 @@ class Frontend extends Controller
             ]
         ];
 
-        /* Formating the name */
+        // Formating the name
         $code = strtolower($name);
 
-        /* Modify the special names  */
+        // Modify the special names 
         if ($code == '@jquery') {
             $code = 'jquery';
         }
@@ -490,29 +551,29 @@ class Frontend extends Controller
             $code = 'owl_carousel';
         }
 
-        /* There is no version */
+        // There is no version
         if ($path == '') {
             $version = 'none';
         }
 
-        /* jQuery build-in combiner */
+        // jQuery build-in combiner
         else if ($name == '@jquery') {
             $version = '2.1.3';
         }
 
-        /* Get version from name */
+        // Get version from name
         else if (is_numeric(substr($code, -3, 1)) && is_numeric(substr($code, -1, 1))) {
             $array = explode('-', $code);
             $name = str_replace($array[count($array) - 1], '', $name);
             $version = $array[count($array) - 1];
         }
 
-        /* Get version from file */
+        // Get version from file
         else {
             $version = $this->getPluginVersion($path);
         }
 
-        /* Empty details */
+        // Empty details
         if (!isset($plugin[$code])) {
             return [
                 'name'    => ucfirst(str_replace(['.', '-', '_'], ' ', $name)),
@@ -522,7 +583,7 @@ class Frontend extends Controller
             ];
         }
 
-        /* Details of plugin */
+        // Details of plugin
         return [
             'name'    => $plugin[$code]['name'],
             'webpage' => $plugin[$code]['webpage'],
@@ -531,7 +592,7 @@ class Frontend extends Controller
         ];
     }
 
-    /* Get version */
+    // Get version
     public function getPluginVersion($path = '')
     {
         if (!File::exists(base_path().'/'.$path)) {
@@ -558,7 +619,7 @@ class Frontend extends Controller
         return 'none';
     }
 
-    /* Add plugin */
+    // Add plugin
     public function insertToDatabase($name = '', $webpage = '', $version = 'none', $language = 1, $theme = '', $description = '')
     {
         if ($description != '') {
@@ -578,7 +639,7 @@ class Frontend extends Controller
         ]);
     }
 
-    /* Update version */
+    // Update version
     public function updateToDatabase($id = 0, $version = '1.0')
     {
         if (!$item = FrontendPlugins::find($id)) {
@@ -588,7 +649,7 @@ class Frontend extends Controller
         }
     }
 
-    /* Remove plugins */
+    // Remove plugins
     public function onRemovePlugins()
     {
         if (($checkedIds = post('checked')) && is_array($checkedIds) && count($checkedIds)) {
@@ -606,7 +667,7 @@ class Frontend extends Controller
         return Redirect::refresh();
     }
 
-    /* Folder stat */
+    // Folder stat
     public function pluginFolderStat($folder = 'themes')
     {
         $attr['size'] = $attr['files'] = $attr['folders'] = 0;
@@ -636,7 +697,7 @@ class Frontend extends Controller
         return $attr;
     }
 
-    /* File size */
+    // File size
     public function pluginFileSize($size = 0)
     {
         if ($size > 0) {
