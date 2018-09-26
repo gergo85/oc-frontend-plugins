@@ -2,6 +2,7 @@
 
 use System\Classes\PluginBase;
 use System\Classes\SettingsManager;
+use Backend\Models\Preference;
 use Backend;
 use Event;
 use BackendAuth;
@@ -58,7 +59,11 @@ class Plugin extends PluginBase
     {
         Event::listen('backend.form.extendFields', function($form)
         {
-            if ($form->model instanceof Backend\Models\Preference) {
+            if (!BackendAuth::check() || $form->isNested) {
+                return;
+            }
+
+            if ($form->model instanceof Preference) {
 
                 if (!BackendAuth::getUser()->hasAccess('indikator.plugins')) {
                     return;
