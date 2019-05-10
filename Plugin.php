@@ -38,8 +38,9 @@ class Plugin extends PluginBase
     {
         return [
             'Indikator\Plugins\ReportWidgets\Plugins' => [
-                'label'   => 'indikator.plugins::lang.plugin.name',
-                'context' => 'dashboard'
+                'label'       => 'indikator.plugins::lang.plugin.name',
+                'context'     => 'dashboard',
+                'permissions' => ['indikator.plugins']
             ]
         ];
     }
