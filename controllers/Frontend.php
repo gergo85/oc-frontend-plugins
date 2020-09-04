@@ -429,7 +429,7 @@ class Frontend extends Controller
         $plugin = [
             'bootstrap_css' => [
                 'name'    => 'Bootstrap',
-                'webpage' => 'http://getbootstrap.com/css'
+                'webpage' => 'https://getbootstrap.com/css'
             ],
             'animate' => [
                 'name'    => 'Animate',
@@ -437,7 +437,7 @@ class Frontend extends Controller
             ],
             'font_awesome' => [
                 'name'    => 'Font Awesome',
-                'webpage' => 'http://fontawesome.io/icons'
+                'webpage' => 'https://fontawesome.com/icons'
             ],
             'normalize' => [
                 'name'    => 'Normalize',
@@ -445,15 +445,15 @@ class Frontend extends Controller
             ],
             'bootstrap_js' => [
                 'name'    => 'Bootstrap',
-                'webpage' => 'http://getbootstrap.com/javascript'
+                'webpage' => 'https://getbootstrap.com/javascript'
             ],
             'ckeditor' => [
                 'name'    => 'CKEditor',
-                'webpage' => 'http://ckeditor.com'
+                'webpage' => 'https://ckeditor.com'
             ],
             'tinymce' => [
                 'name'    => 'TinyMCE',
-                'webpage' => 'https://www.tinymce.com'
+                'webpage' => 'https://www.tiny.cloud'
             ],
             'datatables' => [
                 'name'    => 'DataTables',
@@ -461,11 +461,11 @@ class Frontend extends Controller
             ],
             'jquery' => [
                 'name'    => 'jQuery',
-                'webpage' => 'http://jquery.com'
+                'webpage' => 'https://jquery.com'
             ],
             'jquery_ui' => [
                 'name'    => 'jQuery UI',
-                'webpage' => 'http://jqueryui.com'
+                'webpage' => 'https://jqueryui.com'
             ],
             'jquery_migrate' => [
                 'name'    => 'jQuery Migrate',
@@ -477,7 +477,7 @@ class Frontend extends Controller
             ],
             'react' => [
                 'name'    => 'React',
-                'webpage' => 'https://facebook.github.io/react'
+                'webpage' => 'https://reactjs.org'
             ],
             'vuejs' => [
                 'name'    => 'Vue.js',
@@ -489,7 +489,7 @@ class Frontend extends Controller
             ],
             'bxslider' => [
                 'name'    => 'bxSlider',
-                'webpage' => 'http://bxslider.com'
+                'webpage' => 'https://bxslider.com'
             ],
             'isotope' => [
                 'name'    => 'Isotope',
@@ -505,15 +505,19 @@ class Frontend extends Controller
             ],
             'moment' => [
                 'name'    => 'Moment',
-                'webpage' => 'http://momentjs.com'
+                'webpage' => 'https://momentjs.com'
             ],
             'owl_carousel' => [
                 'name'    => 'OWL Carousel',
                 'webpage' => 'http://www.owlgraphic.com/owlcarousel'
             ],
+            'slick' => [
+                'name'    => 'slick',
+                'webpage' => 'https://github.com/kenwheeler/slick'
+            ],
             'tooltipster' => [
                 'name'    => 'Tooltipster',
-                'webpage' => 'http://iamceege.github.io/tooltipster'
+                'webpage' => 'https://www.heteroclito.fr/modules/tooltipster'
             ],
             'waypoints' => [
                 'name'    => 'Waypoints',
@@ -521,7 +525,7 @@ class Frontend extends Controller
             ],
             'wow' => [
                 'name'    => 'WOW',
-                'webpage' => 'http://mynameismatthieu.com/WOW'
+                'webpage' => 'https://www.delac.io/wow'
             ]
         ];
 
@@ -558,7 +562,7 @@ class Frontend extends Controller
 
         // jQuery build-in combiner
         else if ($name == '@jquery') {
-            $version = '2.1.3';
+            $version = '3.4.0';
         }
 
         // Get version from name

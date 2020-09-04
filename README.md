@@ -16,30 +16,34 @@ Supported CDNs
 
 Supported web fonts
 * [Google Fonts](https://www.google.com/fonts)
-* [Font Awesome](http://fontawesome.io/icons)
+* [Font Awesome](https://fontawesome.com/icons)
 
 Supported CSS plugins
 * [Animate](https://daneden.github.io/animate.css)
-* [Bootstrap](http://getbootstrap.com)
+* [Bootstrap](https://getbootstrap.com)
 * [Normalize](https://necolas.github.io/normalize.css)
 
 Supported JS plugins
-* [jQuery](http://jquery.com)
-* [jQuery UI](http://jqueryui.com)
+* [jQuery](https://jquery.com)
+* [jQuery UI](https://jqueryui.com)
 * [jQuery Migrate](https://github.com/jquery/jquery-migrate)
 * [AngularJS](https://angularjs.org)
 * [baguetteBox](https://feimosi.github.io/baguetteBox.js)
-* [bxSlider](http://bxslider.com)
-* [CKEditor](http://ckeditor.com)
+* [bxSlider](https://bxslider.com)
+* [CKEditor](https://ckeditor.com)
 * [DataTables](https://datatables.net)
 * [Isotope](http://isotope.metafizzy.co)
+* [Masonry](https://masonry.desandro.com)
 * [Modernizr](https://modernizr.com)
-* [Moment](http://momentjs.com)
+* [Moment](https://momentjs.com)
 * [OWL Carousel](http://www.owlgraphic.com/owlcarousel)
-* [TinyMCE](https://www.tinymce.com)
-* [Tooltipster](http://iamceege.github.io/tooltipster)
+* [React](https://reactjs.org)
+* [slick](https://github.com/kenwheeler/slick)
+* [TinyMCE](https://www.tiny.cloud)
+* [Tooltipster](https://www.heteroclito.fr/modules/tooltipster)
+* [Vue.js](https://vuejs.org)
 * [Waypoints](http://imakewebthings.com/waypoints)
-* [WOW](http://mynameismatthieu.com/WOW)
+* [WOW](https://www.delac.io/wow)
 
 Supported other plugins
 * The plugin can finding and listing other JavaScript plugins too without version number and description.
