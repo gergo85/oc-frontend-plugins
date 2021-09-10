@@ -1,0 +1,11 @@
+{
+    "name": "indikator/plugins-plugin",
+    "type": "october-plugin",
+    "description": "List of components which are use in front-end. So you won't forget the name and version of usage plugins, and it is easier update them too.",
+    "homepage": "https://octobercms.com/plugin/indikator-plugins",
+    "keywords": ["october", "octobercms"],
+    "license": "MIT",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
